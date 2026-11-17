@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header className="sticky top-0 w-full z-40 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
-        <div className="h-16 px-4 flex items-center justify-between gap-2 max-w-md mx-auto">
+        <div className="h-16 px-4 md:px-6 flex items-center justify-between gap-2 w-full">
           {showBack ? (
             <div className="flex items-center gap-2 min-w-0">
               <button
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           ) : (
             <div className="flex items-center gap-3 min-w-0">
-              <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+              <Link href="/beranda" className="flex items-center gap-2 flex-shrink-0 lg:hidden">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center shadow-md shadow-primary/20 text-white font-black text-xl tracking-tighter">
                   TK
                 </div>

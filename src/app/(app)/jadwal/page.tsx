@@ -25,7 +25,7 @@ export default function JadwalPage() {
   const activeBooking = bookings[0] || MOCK_INITIAL_BOOKING;
 
   return (
-    <div className="flex flex-col min-h-screen pb-24">
+    <div className="flex flex-col min-h-screen pb-24 lg:pb-10">
       {/* Header */}
       <Header
         title="Jadwal & Progres Belajar"

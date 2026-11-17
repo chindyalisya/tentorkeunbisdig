@@ -55,8 +55,8 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end justify-center transition-opacity animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-surface rounded-t-3xl p-5 shadow-2xl border-t border-outline-variant/30 flex flex-col max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center transition-opacity animate-in fade-in duration-200">
+      <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border-t border-outline-variant/30 flex flex-col max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
         {/* Top Header */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-outline-variant/20">
           <div className="flex flex-col min-w-0 pr-1">

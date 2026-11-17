@@ -19,8 +19,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
   themeColor: "#000552",
 };
@@ -40,11 +38,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="min-h-full flex flex-col bg-slate-100 items-center justify-start text-on-surface">
-        {/* Responsive Mobile-Centered Frame Container */}
-        <div className="w-full max-w-md min-h-screen bg-mesh-canvas flex flex-col relative shadow-2xl sm:my-0 md:my-0 border-x border-outline-variant/30 overflow-x-hidden">
-          {children}
-        </div>
+      <body className="min-h-full bg-background text-on-surface">
+        {children}
       </body>
     </html>
   );

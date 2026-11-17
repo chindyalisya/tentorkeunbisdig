@@ -42,7 +42,7 @@ export default function PaymentSuccessPage({ params }: PaymentSuccessPageProps) 
 
   return (
     <div className="flex flex-col min-h-screen pb-16">
-      <Header title="Konfirmasi Pembayaran" showBack backHref="/" />
+      <Header title="Konfirmasi Pembayaran" showBack backHref="/beranda" />
 
       <main className="px-4 space-y-5 pt-3">
         {/* Celebration Header */}

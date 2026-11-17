@@ -56,9 +56,9 @@ function TentorCatalogContent() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen pb-24">
+    <div className="flex flex-col min-h-screen pb-24 lg:pb-10">
       {/* Header */}
-      <Header title="Daftar Tentor Pilihan" showBack backHref="/" />
+      <Header title="Daftar Tentor Pilihan" showBack backHref="/beranda" />
 
       <main className="px-4 space-y-4 pt-3">
         {/* Search & Filter Bar */}
@@ -175,13 +175,13 @@ function TentorCatalogContent() {
         </div>
 
         {/* Tutor Cards List */}
-        <div className="space-y-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {filteredTutors.length > 0 ? (
             filteredTutors.map((tutor) => (
               <TutorCard key={tutor.id} tutor={tutor} />
             ))
           ) : (
-            <div className="p-8 text-center bg-surface rounded-3xl border border-outline-variant/30 space-y-3">
+            <div className="md:col-span-2 xl:col-span-3 p-8 text-center bg-surface rounded-3xl border border-outline-variant/30 space-y-3">
               <div className="w-12 h-12 rounded-full bg-surface-container mx-auto flex items-center justify-center text-on-surface-variant">
                 <MaterialIcon name="search_off" className="text-2xl" />
               </div>
@@ -206,8 +206,8 @@ function TentorCatalogContent() {
 
       {/* Filter Drawer / Modal */}
       {showFilterDrawer && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end justify-center p-0">
-          <div className="w-full max-w-md bg-surface rounded-t-3xl p-5 shadow-2xl border-t border-outline-variant/30 space-y-4 animate-in slide-in-from-bottom duration-200">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0">
+          <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border-t border-outline-variant/30 space-y-4 animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
               <h3 className="font-bold text-base text-primary">Urutkan & Saring Tentor</h3>
               <button

@@ -77,7 +77,7 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
 
   return (
     <div className="flex flex-col min-h-screen pb-16">
-      <Header title="Instruksi Pembayaran" showBack backHref="/" />
+      <Header title="Instruksi Pembayaran" showBack backHref="/beranda" />
 
       <main className="px-4 space-y-4 pt-3">
         {/* Countdown Header */}
@@ -259,7 +259,7 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
           </button>
 
           <Link
-            href="/"
+            href="/beranda"
             className="w-full py-2.5 rounded-xl text-center block text-xs font-semibold text-on-surface-variant hover:text-on-surface"
           >
             Kembali ke Beranda (Bayar Nanti)

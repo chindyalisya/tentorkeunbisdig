@@ -1,249 +1,285 @@
-'use client';
-
-import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Header } from '@/components/navigation/Header';
-import { BottomNav } from '@/components/navigation/BottomNav';
-import { TutorCard } from '@/components/tutors/TutorCard';
 import { MaterialIcon } from '@/components/common/MaterialIcon';
 import { MOCK_TUTORS } from '@/lib/data/mock-data';
 
-export default function HomePage() {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'cari' | 'mengajar'>('cari');
-  const [selectedJenjang, setSelectedJenjang] = useState<string>('SMA');
+const NAV_LINKS = [
+  { href: '#fitur', label: 'Fitur' },
+  { href: '#cara-kerja', label: 'Cara Kerja' },
+  { href: '#tentor', label: 'Tentor' },
+];
 
-  const jenjangList = [
-    { id: 'Semua', name: 'Semua', icon: 'auto_stories' },
-    { id: 'SD', name: 'SD', icon: 'child_care' },
-    { id: 'SMP', name: 'SMP', icon: 'school' },
-    { id: 'SMA', name: 'SMA', icon: 'menu_book' },
-    { id: 'UTBK', name: 'UTBK SNBT', icon: 'psychology' },
-    { id: 'Olimpiade', name: 'Olimpiade', icon: 'emoji_events' },
-  ];
+const FEATURES = [
+  {
+    icon: 'psychology_alt',
+    title: 'Matchmaking AI',
+    desc: 'Jawab beberapa pertanyaan tentang gaya belajar dan target nilaimu, lalu dapatkan tentor yang paling cocok.',
+  },
+  {
+    icon: 'shield',
+    title: 'Rekber Aman',
+    desc: 'Pembayaran ditahan dan baru dicairkan ke tentor setelah sesi les selesai.',
+  },
+  {
+    icon: 'qr_code_scanner',
+    title: 'E-Tiket Presensi',
+    desc: 'Kehadiran setiap sesi divalidasi lewat kode QR, jadi jadwal belajar tercatat rapi.',
+  },
+  {
+    icon: 'assignment',
+    title: 'Rapor Evaluasi',
+    desc: 'Pantau perkembangan materi dan latihan soal dari rapor yang diisi tentor setelah sesi.',
+  },
+];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/tentor?q=${encodeURIComponent(searchQuery)}`);
-    } else {
-      router.push('/tentor');
-    }
-  };
+const STEPS = [
+  {
+    title: 'Ceritakan kebutuhanmu',
+    desc: 'Pilih jenjang dan mata pelajaran, atau biarkan AI memetakan gaya belajarmu.',
+  },
+  {
+    title: 'Pilih tentor & jadwal',
+    desc: 'Bandingkan profil, rating, dan tarif, lalu booking slot tatap muka atau online.',
+  },
+  {
+    title: 'Belajar & pantau hasilnya',
+    desc: 'Ikuti sesi, ngobrol di chat, unduh modul, dan lihat rapor perkembanganmu.',
+  },
+];
 
-  const filteredTutors = MOCK_TUTORS.filter((t) => {
-    if (selectedJenjang === 'Semua') return true;
-    return t.levels.includes(selectedJenjang);
-  });
+function rupiah(n: number) {
+  return `Rp${n.toLocaleString('id-ID')}`;
+}
+
+export default function LandingPage() {
+  const featured = MOCK_TUTORS[0];
+  const preview = MOCK_TUTORS.slice(0, 3);
 
   return (
-    <div className="flex flex-col min-h-screen pb-24">
-      {/* Header */}
-      <Header />
-
-      {/* Main Content */}
-      <main className="px-4 space-y-6 pt-3">
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari mata pelajaran, bab, atau nama tentor..."
-            className="w-full h-12 pl-11 pr-12 rounded-2xl bg-surface border border-outline-variant/40 text-xs text-on-surface placeholder:text-on-surface-variant/70 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-          />
-          <MaterialIcon
-            name="search"
-            className="absolute left-3.5 top-3 text-[20px] text-on-surface-variant"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-2 w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors shadow"
-          >
-            <MaterialIcon name="arrow_forward" className="text-base" />
-          </button>
-        </form>
-
-        {/* Hero Banner */}
-        <section className="p-5 rounded-3xl bg-gradient-to-br from-primary via-primary-container to-[#1a237e] text-white shadow-xl shadow-primary/15 relative overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute -right-8 -bottom-8 w-36 h-36 bg-secondary-container/20 rounded-full blur-2xl pointer-events-none" />
-          <div className="absolute -left-8 -top-8 w-32 h-32 bg-amber-400/10 rounded-full blur-xl pointer-events-none" />
-
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-amber-300 text-[11px] font-bold tracking-wide mb-2.5 border border-white/10">
-              <MaterialIcon name="verified" className="text-[14px]" />
-              #1 Tutoring Marketplace Bergaransi
+    <div className="bg-white text-on-surface">
+      {/* Navbar */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-outline-variant/30">
+        <div className="mx-auto max-w-6xl h-16 px-5 sm:px-8 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="TentorKeun">
+            <span className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-black text-base tracking-tighter">
+              TK
             </span>
+            <span className="font-extrabold text-lg text-primary tracking-tight">TentorKeun</span>
+          </Link>
 
-            <h1 className="font-bold text-xl leading-tight text-white tracking-tight">
-              Belajar lebih asyik bersama tentor pilihan terbaik
-            </h1>
-
-            <p className="text-xs text-slate-200 mt-2 leading-relaxed">
-              Akses tentor les privat unggulan dari UI, ITB, & UGM. Siap membimbing Kurikulum Merdeka, Cambridge, dan persiapan UTBK SNBT.
-            </p>
-
-            {/* Segmented Switcher */}
-            <div className="mt-4 p-1 rounded-full bg-black/20 backdrop-blur-sm flex items-center max-w-xs border border-white/10">
-              <button
-                type="button"
-                onClick={() => setActiveTab('cari')}
-                className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
-                  activeTab === 'cari'
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-200 hover:text-white'
-                }`}
-              >
-                <MaterialIcon name="search" className="text-sm" />
-                <span>Cari Tentor</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => router.push('/tentor')}
-                className={`flex-1 py-1.5 px-3 rounded-full text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
-                  activeTab === 'mengajar'
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-200 hover:text-white'
-                }`}
-              >
-                <MaterialIcon name="school" className="text-sm" />
-                <span>Daftar Guru</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Jenjang Belajar */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-sm text-on-surface">Pilih Jenjang Belajar</h2>
-            <Link href="/tentor" className="text-xs font-semibold text-primary hover:underline">
-              Lihat Semua
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            {jenjangList.map((item) => {
-              const isSelected = selectedJenjang === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedJenjang(item.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border ${
-                    isSelected
-                      ? 'bg-primary text-white border-primary shadow-sm shadow-primary/20'
-                      : 'bg-surface text-on-surface border-outline-variant/30 hover:bg-surface-container-low'
-                  }`}
-                >
-                  <MaterialIcon name={item.icon} className="text-base" />
-                  <span>{item.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* AI Matchmaking Feature Card */}
-        <section className="p-4 rounded-3xl bg-surface border border-secondary/20 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
-          <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-secondary to-secondary-container text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-secondary/20">
-              <MaterialIcon name="psychology_alt" className="text-2xl" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-[10px] font-black tracking-wider text-secondary uppercase bg-secondary-container/40 px-2 py-0.5 rounded-full inline-block mb-1">
-                Fitur Unggulan AI
-              </span>
-              <h3 className="font-bold text-sm text-primary leading-snug">
-                Konsultasi Pemetaan Belajar AI
-              </h3>
-              <p className="text-[11px] text-on-surface-variant mt-1 leading-relaxed">
-                Bingung memilih dari puluhan tentor? Cocokkan karakter belajar, target skor, & gaya belajar Anda dengan algoritma AI kami.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] text-on-surface-variant block">Diagnosis Belajar</span>
-              <span className="text-xs font-bold text-emerald-600">Gratis 100%</span>
-            </div>
-            <Link
-              href="/ai-matchmaking"
-              className="px-4 py-2 rounded-xl bg-secondary text-white text-xs font-bold shadow hover:bg-secondary/90 transition-all active:scale-95 flex items-center gap-1"
-            >
-              <span>Mulai Matchmaking</span>
-              <MaterialIcon name="arrow_forward" className="text-sm" />
-            </Link>
-          </div>
-        </section>
-
-        {/* Tentor Terpilih Minggu Ini */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <h2 className="font-bold text-sm text-on-surface">Tentor Terpilih Minggu Ini</h2>
-              <p className="text-[11px] text-on-surface-variant">Top ratings & evaluasi belajar terbaik</p>
-            </div>
-            <Link href="/tentor" className="text-xs font-semibold text-primary hover:underline">
-              Semua ({MOCK_TUTORS.length})
-            </Link>
-          </div>
-
-          <div className="space-y-3">
-            {filteredTutors.map((tutor) => (
-              <TutorCard key={tutor.id} tutor={tutor} />
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-on-surface-variant">
+            {NAV_LINKS.map((l) => (
+              <a key={l.href} href={l.href} className="hover:text-primary transition-colors">
+                {l.label}
+              </a>
             ))}
+          </nav>
+
+          <Link
+            href="/beranda"
+            className="h-10 px-5 inline-flex items-center rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors"
+          >
+            Buka Aplikasi
+          </Link>
+        </div>
+      </header>
+
+      <main>
+        {/* Hero */}
+        <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-14 pb-16 md:pt-24 md:pb-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary bg-secondary-fixed/60 px-3 py-1 rounded-full">
+              <MaterialIcon name="verified" className="text-[14px]" />
+              Les privat dengan garansi rekber
+            </span>
+            <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-primary">
+              Temukan tentor yang pas, belajar jadi lebih tenang.
+            </h1>
+            <p className="mt-5 text-base sm:text-lg text-on-surface-variant leading-relaxed max-w-xl">
+              TentorKeun mempertemukan siswa dengan tentor terverifikasi untuk Kurikulum Merdeka, Cambridge, dan
+              persiapan UTBK SNBT. Cocokkan lewat AI, bayar aman, dan pantau progres di satu tempat.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/beranda"
+                className="h-12 px-7 inline-flex items-center justify-center gap-2 rounded-full bg-primary text-white font-semibold hover:bg-primary-container transition-colors"
+              >
+                Cari Tentor
+                <MaterialIcon name="arrow_forward" className="text-[20px]" />
+              </Link>
+              <Link
+                href="/ai-matchmaking"
+                className="h-12 px-7 inline-flex items-center justify-center gap-2 rounded-full border border-outline-variant text-primary font-semibold hover:bg-surface-container-low transition-colors"
+              >
+                <MaterialIcon name="auto_awesome" className="text-[20px]" />
+                Coba Matchmaking AI
+              </Link>
+            </div>
+          </div>
+
+          {/* Kartu pratinjau tentor */}
+          <div className="relative mx-auto w-full max-w-md">
+            <div className="rounded-3xl border border-outline-variant/40 bg-white p-6 shadow-[0_20px_60px_-20px_rgba(0,5,82,0.18)]">
+              <div className="flex items-center gap-4">
+                <img
+                  src={featured.avatar_url}
+                  alt={featured.name}
+                  className="w-16 h-16 rounded-2xl object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="font-bold text-primary truncate">{featured.name}</p>
+                  <p className="text-sm text-on-surface-variant truncate">{featured.badge}</p>
+                </div>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {featured.subjects.slice(0, 3).map((s) => (
+                  <span key={s} className="text-xs font-medium px-3 py-1 rounded-full bg-surface-container-low text-on-surface-variant">
+                    {s}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-5 pt-5 border-t border-outline-variant/30 flex items-center justify-between">
+                <span className="flex items-center gap-1 text-sm font-bold text-primary">
+                  <MaterialIcon name="star" filled className="text-[18px] text-tertiary-fixed-dim" />
+                  {featured.rating}
+                  <span className="font-normal text-on-surface-variant">({featured.reviews_count})</span>
+                </span>
+                <span className="text-sm text-on-surface-variant">
+                  <b className="text-primary">{rupiah(featured.hourly_rate)}</b> / jam
+                </span>
+              </div>
+            </div>
+            <div className="hidden sm:flex absolute -bottom-5 -left-5 items-center gap-2 rounded-2xl bg-white border border-outline-variant/40 px-4 py-3 shadow-lg">
+              <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <MaterialIcon name="shield" className="text-[18px]" />
+              </span>
+              <span className="text-xs font-semibold text-primary leading-tight">
+                Dana aman
+                <br />
+                <span className="font-normal text-on-surface-variant">sampai sesi selesai</span>
+              </span>
+            </div>
           </div>
         </section>
 
-        {/* Rekber & Guarantees */}
-        <section className="p-4 rounded-3xl bg-surface-container-low border border-outline-variant/30 space-y-3">
-          <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-            <MaterialIcon name="verified_user" className="text-lg text-primary" />
-            <span>Garansi Keamanan TentorKeun</span>
+        {/* Fitur */}
+        <section id="fitur" className="scroll-mt-20 border-t border-outline-variant/30 bg-surface-container-low/50">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 md:py-24">
+            <p className="text-sm font-semibold text-secondary">Fitur</p>
+            <h2 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-primary max-w-2xl">
+              Semua yang kamu butuhkan untuk belajar privat.
+            </h2>
+            <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {FEATURES.map((f) => (
+                <div key={f.title} className="rounded-2xl bg-white border border-outline-variant/40 p-6">
+                  <span className="w-11 h-11 rounded-xl bg-primary-fixed text-primary flex items-center justify-center">
+                    <MaterialIcon name={f.icon} className="text-[24px]" />
+                  </span>
+                  <h3 className="mt-5 font-bold text-primary">{f.title}</h3>
+                  <p className="mt-2 text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-3 rounded-2xl bg-surface border border-outline-variant/20">
-              <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center mb-1.5">
-                <MaterialIcon name="shield" className="text-sm" />
+        {/* Cara kerja */}
+        <section id="cara-kerja" className="scroll-mt-20">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 md:py-24">
+            <p className="text-sm font-semibold text-secondary">Cara kerja</p>
+            <h2 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-primary">
+              Tiga langkah, langsung belajar.
+            </h2>
+            <ol className="mt-10 grid md:grid-cols-3 gap-8">
+              {STEPS.map((s, i) => (
+                <li key={s.title}>
+                  <span className="text-5xl font-extrabold text-primary-fixed-dim">0{i + 1}</span>
+                  <h3 className="mt-3 text-lg font-bold text-primary">{s.title}</h3>
+                  <p className="mt-2 text-sm text-on-surface-variant leading-relaxed">{s.desc}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Tentor */}
+        <section id="tentor" className="scroll-mt-20 border-t border-outline-variant/30">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 md:py-24">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-secondary">Tentor</p>
+                <h2 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-primary">
+                  Kenalan dengan beberapa tentor.
+                </h2>
               </div>
-              <p className="font-bold text-on-surface text-[11px]">Rekber Aman 100%</p>
-              <p className="text-[10px] text-on-surface-variant mt-0.5">Dana hanya dicairkan setelah sesi les tuntas.</p>
+              <Link href="/tentor" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+                Lihat semua
+                <MaterialIcon name="arrow_forward" className="text-[18px]" />
+              </Link>
             </div>
 
-            <div className="p-3 rounded-2xl bg-surface border border-outline-variant/20">
-              <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center mb-1.5">
-                <MaterialIcon name="qr_code_scanner" className="text-sm" />
-              </div>
-              <p className="font-bold text-on-surface text-[11px]">E-Tiket Presensi</p>
-              <p className="text-[10px] text-on-surface-variant mt-0.5">Validasi kehadiran sesi dengan kode QR aman.</p>
+            <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {preview.map((t) => (
+                <Link
+                  key={t.id}
+                  href={`/tentor/${t.id}`}
+                  className="group rounded-2xl border border-outline-variant/40 bg-white p-5 hover:border-primary/40 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-4">
+                    <img src={t.avatar_url} alt={t.name} className="w-14 h-14 rounded-xl object-cover" />
+                    <div className="min-w-0">
+                      <p className="font-bold text-primary truncate group-hover:underline">{t.name}</p>
+                      <p className="text-xs text-on-surface-variant truncate">{t.badge}</p>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm text-on-surface-variant line-clamp-2">{t.subjects.slice(0, 3).join(' · ')}</p>
+                  <div className="mt-4 flex items-center justify-between text-sm">
+                    <span className="flex items-center gap-1 font-bold text-primary">
+                      <MaterialIcon name="star" filled className="text-[16px] text-tertiary-fixed-dim" />
+                      {t.rating}
+                    </span>
+                    <span className="text-on-surface-variant">{rupiah(t.hourly_rate)} / jam</span>
+                  </div>
+                </Link>
+              ))}
             </div>
+            <Link href="/tentor" className="sm:hidden mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+              Lihat semua tentor
+              <MaterialIcon name="arrow_forward" className="text-[18px]" />
+            </Link>
+          </div>
+        </section>
 
-            <div className="p-3 rounded-2xl bg-surface border border-outline-variant/20">
-              <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center mb-1.5">
-                <MaterialIcon name="assignment" className="text-sm" />
-              </div>
-              <p className="font-bold text-on-surface text-[11px]">Rapor Evaluasi Sesi</p>
-              <p className="text-[10px] text-on-surface-variant mt-0.5">Laporan perkembangan materi & latihan soal.</p>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-surface border border-outline-variant/20">
-              <div className="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center mb-1.5">
-                <MaterialIcon name="chat" className="text-sm" />
-              </div>
-              <p className="font-bold text-on-surface text-[11px]">Ruang Obrolan & Modul</p>
-              <p className="text-[10px] text-on-surface-variant mt-0.5">Konsultasi langsung & download modul materi.</p>
+        {/* CTA */}
+        <section className="mx-auto max-w-6xl px-5 sm:px-8 pb-16 md:pb-24">
+          <div className="rounded-3xl bg-primary text-white px-6 py-12 md:px-16 md:py-16 text-center">
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Siap mulai belajar?</h2>
+            <p className="mt-3 text-on-primary-container max-w-xl mx-auto">
+              Cari tentor sesuai kebutuhanmu, atau biarkan AI yang memilihkan.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/beranda"
+                className="h-12 px-7 inline-flex items-center justify-center rounded-full bg-white text-primary font-semibold hover:bg-primary-fixed transition-colors"
+              >
+                Buka Aplikasi
+              </Link>
+              <Link
+                href="/ai-matchmaking"
+                className="h-12 px-7 inline-flex items-center justify-center rounded-full border border-white/30 font-semibold hover:bg-white/10 transition-colors"
+              >
+                Matchmaking AI
+              </Link>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Bottom Nav */}
-      <BottomNav />
+      <footer className="border-t border-outline-variant/30">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-on-surface-variant">
+          <span className="font-bold text-primary">TentorKeun</span>
+          <span>© {new Date().getFullYear()} TentorKeun. Platform marketplace tentor les privat.</span>
+        </div>
+      </footer>
     </div>
   );
 }

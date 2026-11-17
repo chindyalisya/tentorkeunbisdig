@@ -295,8 +295,8 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
       </main>
 
       {/* Sticky Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 p-3 shadow-lg">
-        <div className="max-w-md mx-auto flex items-center justify-between gap-3">
+      <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 p-3 shadow-lg">
+        <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
           <div>
             <span className="text-[10px] text-on-surface-variant block">Tarif Sesi Belajar</span>
             <span className="text-base font-extrabold text-primary">

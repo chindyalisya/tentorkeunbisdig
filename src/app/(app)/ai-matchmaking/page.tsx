@@ -88,7 +88,7 @@ export default function AiMatchmakingPage() {
 
   return (
     <div className="flex flex-col min-h-screen pb-12">
-      <Header title="Matchmaking AI Tentor" showBack backHref="/" />
+      <Header title="Matchmaking AI Tentor" showBack backHref="/beranda" />
 
       <main className="px-4 space-y-5 pt-3">
         {/* Intro Banner */}
