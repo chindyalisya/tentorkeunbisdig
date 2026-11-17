@@ -235,3 +235,4 @@ export const MOCK_CHAT_MESSAGES: ChatMessage[] = [
     is_read: true,
   },
 ];
+

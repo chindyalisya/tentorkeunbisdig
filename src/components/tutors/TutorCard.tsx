@@ -127,3 +127,4 @@ export const TutorCard: React.FC<TutorCardProps> = ({
     </>
   );
 };
+

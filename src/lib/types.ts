@@ -109,3 +109,4 @@ export interface AiMatchmakingInput {
   budget_max: number;
   mode: 'tatap_muka' | 'online' | 'keduanya';
 }
+

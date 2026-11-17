@@ -151,3 +151,4 @@ create policy "Allow public read access to evaluations" on public.evaluations fo
 create policy "Allow public read access to chat_messages" on public.chat_messages for select using (true);
 create policy "Allow public insert to chat_messages" on public.chat_messages for insert with check (true);
 create policy "Allow public insert to ai_matchmakings" on public.ai_matchmakings for insert with check (true);
+

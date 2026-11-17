@@ -324,3 +324,4 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
     </div>
   );
 }
+

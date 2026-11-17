@@ -118,3 +118,4 @@ insert into public.bookings (
   now(),
   now() + interval '24 hours'
 );
+

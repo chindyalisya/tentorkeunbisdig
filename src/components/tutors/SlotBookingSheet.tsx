@@ -257,3 +257,4 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
     </div>
   );
 };
+
