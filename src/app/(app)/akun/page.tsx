@@ -5,7 +5,36 @@ import Link from 'next/link';
 import { Header } from '@/components/navigation/Header';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import { MaterialIcon } from '@/components/common/MaterialIcon';
+import { Reveal } from '@/components/motion/Reveal';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+
+const MENU = [
+  { href: '/jadwal', icon: 'calendar_today', label: 'Jadwal dan e-tiket sesi' },
+  { href: '/chat', icon: 'chat_bubble', label: 'Obrolan dan unduh modul' },
+  { href: '/rapor/eval-sarah-arga-1', icon: 'assignment', label: 'Rapor dan evaluasi sesi' },
+  { href: '/ai-matchmaking', icon: 'psychology', label: 'Matchmaking AI tentor' },
+];
+
+function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={onChange}
+      className={`w-12 h-7 rounded-full p-0.5 flex-shrink-0 transition-colors duration-200 ${
+        checked ? 'bg-primary' : 'bg-outline-variant'
+      }`}
+    >
+      <span
+        className={`block w-6 h-6 rounded-full bg-white transition-transform duration-200 ${
+          checked ? 'translate-x-5' : 'translate-x-0'
+        }`}
+      />
+    </button>
+  );
+}
 
 export default function AkunPage() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -13,208 +42,114 @@ export default function AkunPage() {
 
   return (
     <div className="flex flex-col min-h-screen pb-24 lg:pb-10">
-      <Header title="Akun Saya" />
+      <Header title="Akun" />
 
-      <main className="px-4 space-y-4 pt-3">
-        {/* Profile Card */}
-        <section className="bg-surface rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex items-center gap-4">
-          <div className="w-16 h-16 rounded-3xl bg-primary text-white font-extrabold text-xl flex items-center justify-center shadow-md shadow-primary/20 flex-shrink-0">
-            AP
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5">
-              <h2 className="font-bold text-sm text-on-surface truncate">Arga Pramudya</h2>
-              <span className="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px]">
-                <MaterialIcon name="verified" className="text-xs" />
-              </span>
+      <main className="px-4 md:px-6 pt-6 md:pt-8 grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 items-start">
+        {/* Kolom kiri: profil dan ringkasan */}
+        <div className="space-y-6">
+          <Reveal as="section" className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-xl bg-primary text-on-primary font-extrabold text-xl flex items-center justify-center flex-shrink-0">
+              AP
             </div>
-            <p className="text-xs text-on-surface-variant truncate">
-              arga.pramudya@student.sman8.sch.id
+            <div className="min-w-0">
+              <h2 className="font-bold text-xl text-primary truncate">Arga Pramudya</h2>
+              <p className="text-sm text-on-surface-variant truncate">arga.pramudya@student.sman8.sch.id</p>
+              <p className="text-sm text-on-surface-variant mt-0.5">Siswa kelas 12 SMA</p>
+            </div>
+          </Reveal>
+
+          <Reveal as="section" delay={80}>
+            <h3 className="font-bold text-sm text-on-surface-variant mb-3">Belajarmu sejauh ini</h3>
+            <dl className="grid grid-cols-3 rounded-xl border border-outline-variant bg-surface-container-lowest divide-x divide-outline-variant">
+              {[
+                { v: '4', l: 'sesi paket intensif' },
+                { v: '14,5', l: 'jam belajar' },
+                { v: '87', l: 'rata-rata skor' },
+              ].map((s) => (
+                <div key={s.l} className="p-4">
+                  <dd className="font-extrabold text-2xl text-primary font-[family-name:var(--font-heading)]">{s.v}</dd>
+                  <dt className="text-xs text-on-surface-variant mt-1 leading-snug">{s.l}</dt>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+
+          <Reveal as="section" delay={120} className="rounded-xl bg-surface-container p-4 text-sm">
+            <p className="font-bold text-primary">Butuh bantuan memilih tentor atau kurikulum?</p>
+            <a
+              href="https://wa.me/6281234567890?text=Halo%20Admin%20TentorKeun,%20saya%20butuh%20bantuan%20konsultasi%20tentor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-primary text-on-primary font-semibold hover:bg-primary-container transition-colors active:scale-[0.97]"
+            >
+              <MaterialIcon name="support_agent" className="text-[1.125rem]" />
+              Chat konsultan di WhatsApp
+            </a>
+          </Reveal>
+        </div>
+
+        {/* Kolom kanan: menu dan pengaturan */}
+        <div className="space-y-6">
+          <Reveal as="section">
+            <h3 className="font-bold text-sm text-on-surface-variant mb-3">Pintasan</h3>
+            <nav className="rounded-xl border border-outline-variant bg-surface-container-lowest divide-y divide-outline-variant overflow-hidden">
+              {MENU.map((m) => (
+                <Link
+                  key={m.href}
+                  href={m.href}
+                  className="group flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-primary hover:bg-surface-container transition-colors"
+                >
+                  <MaterialIcon name={m.icon} className="text-[1.375rem] text-on-surface-variant" />
+                  <span className="flex-1">{m.label}</span>
+                  <MaterialIcon
+                    name="chevron_right"
+                    className="text-xl text-outline transition-transform duration-200 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              ))}
+            </nav>
+          </Reveal>
+
+          <Reveal as="section" delay={80}>
+            <h3 className="font-bold text-sm text-on-surface-variant mb-3">Pengingat</h3>
+            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest divide-y divide-outline-variant">
+              <div className="flex items-center justify-between gap-4 p-4">
+                <div>
+                  <p className="font-bold text-sm text-primary">WhatsApp 2 jam sebelum sesi</p>
+                  <p className="text-sm text-on-surface-variant">Pengingat jadwal sebelum tentor tiba.</p>
+                </div>
+                <Toggle
+                  checked={notificationsEnabled}
+                  onChange={() => setNotificationsEnabled((v) => !v)}
+                  label="Pengingat WhatsApp 2 jam sebelum sesi"
+                />
+              </div>
+              <div className="flex items-center justify-between gap-4 p-4">
+                <div>
+                  <p className="font-bold text-sm text-primary">Salinan rapor ke orang tua</p>
+                  <p className="text-sm text-on-surface-variant">Rapor evaluasi dikirim otomatis ke Ibu atau Ayah.</p>
+                </div>
+                <Toggle
+                  checked={parentReminder}
+                  onChange={() => setParentReminder((v) => !v)}
+                  label="Kirim salinan rapor ke orang tua"
+                />
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal as="section" delay={120} className="text-sm text-on-surface-variant">
+            <p>
+              <span className="font-bold text-primary">Sumber data:</span>{' '}
+              {isSupabaseConfigured
+                ? 'terhubung ke proyek Supabase. Pemesanan, tentor, chat, dan rapor tersimpan di cloud.'
+                : 'data demo lokal. Untuk memakai Supabase, isi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY di .env.local.'}
             </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                Siswa Kelas 12 SMA
-              </span>
-              <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                Member Aktif
-              </span>
-            </div>
-          </div>
-        </section>
-
-        {/* Database & Cloud Connection Status */}
-        <section className="p-4 rounded-3xl bg-surface border border-outline-variant/30 space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                <MaterialIcon name="database" className="text-base" />
-              </div>
-              <div>
-                <h3 className="font-bold text-xs text-on-surface">Status Database Supabase</h3>
-                <p className="text-[10px] text-on-surface-variant">PostgreSQL & Auth Integration</p>
-              </div>
-            </div>
-            <span
-              className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                isSupabaseConfigured
-                  ? 'bg-emerald-100 text-emerald-800'
-                  : 'bg-blue-100 text-blue-800'
-              }`}
-            >
-              {isSupabaseConfigured ? '🟢 Supabase Terhubung' : '🔵 Mode Demo / Offline DB'}
-            </span>
-          </div>
-          <p className="text-[11px] text-on-surface-variant leading-relaxed">
-            {isSupabaseConfigured
-              ? 'Aplikasi terhubung langsung ke proyek Supabase Anda. Semua pemesanan, data tentor, chat, dan rapor tersinkronisasi di cloud.'
-              : 'Aplikasi berjalan dengan data lokal reaktif. Untuk menghubungkan ke project Supabase Anda, masukkan NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY di file .env.local.'}
-          </p>
-        </section>
-
-        {/* Learning Statistics */}
-        <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant mb-3">
-            Statistik Belajar Anda
-          </h3>
-          <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-3 rounded-2xl bg-surface-container-low">
-              <span className="font-extrabold text-base text-primary block">4 Sesi</span>
-              <span className="text-[10px] text-on-surface-variant">Paket Intensif</span>
-            </div>
-            <div className="p-3 rounded-2xl bg-surface-container-low">
-              <span className="font-extrabold text-base text-emerald-600 block">14.5 Jam</span>
-              <span className="text-[10px] text-on-surface-variant">Waktu Belajar</span>
-            </div>
-            <div className="p-3 rounded-2xl bg-surface-container-low">
-              <span className="font-extrabold text-base text-secondary block">87/100</span>
-              <span className="text-[10px] text-on-surface-variant">Rata-rata Skor</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Menu Links */}
-        <section className="bg-surface rounded-3xl p-2 shadow-sm border border-outline-variant/30 divide-y divide-outline-variant/20 text-xs">
-          <Link
-            href="/jadwal"
-            className="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-2xl transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                <MaterialIcon name="calendar_today" className="text-base" />
-              </div>
-              <span className="font-bold text-on-surface">Jadwal & E-Tiket Sesi</span>
-            </div>
-            <MaterialIcon name="chevron_right" className="text-base text-outline-variant" />
-          </Link>
-
-          <Link
-            href="/ai-matchmaking"
-            className="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-2xl transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-secondary-container/40 text-secondary flex items-center justify-center">
-                <MaterialIcon name="psychology" className="text-base" />
-              </div>
-              <span className="font-bold text-on-surface">Matchmaking AI Tentor</span>
-            </div>
-            <MaterialIcon name="chevron_right" className="text-base text-outline-variant" />
-          </Link>
-
-          <Link
-            href="/chat"
-            className="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-2xl transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
-                <MaterialIcon name="chat" className="text-base" />
-              </div>
-              <span className="font-bold text-on-surface">Ruang Obrolan & Unduh Modul</span>
-            </div>
-            <MaterialIcon name="chevron_right" className="text-base text-outline-variant" />
-          </Link>
-
-          <Link
-            href="/rapor/eval-sarah-arga-1"
-            className="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-2xl transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-                <MaterialIcon name="assignment" className="text-base" />
-              </div>
-              <span className="font-bold text-on-surface">Rapor & Evaluasi Sesi</span>
-            </div>
-            <MaterialIcon name="chevron_right" className="text-base text-outline-variant" />
-          </Link>
-        </section>
-
-        {/* Preferences Toggles */}
-        <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3 text-xs">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant pb-2 border-b border-outline-variant/20">
-            Preferensi & Notifikasi
-          </h3>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-bold text-on-surface">Notifikasi WhatsApp H-2 Jam</p>
-              <p className="text-[10px] text-on-surface-variant">
-                Pengingat jadwal sebelum tentor tiba
-              </p>
-            </div>
-            <button
-              onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-              className={`w-11 h-6 rounded-full transition-colors relative p-0.5 ${
-                notificationsEnabled ? 'bg-primary' : 'bg-surface-container'
-              }`}
-            >
-              <div
-                className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                  notificationsEnabled ? 'translate-x-5' : 'translate-x-0'
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-bold text-on-surface">Kirim Salinan Rapor ke Orang Tua</p>
-              <p className="text-[10px] text-on-surface-variant">
-                Laporan evaluasi otomatis dikirimkan ke Ibu/Ayah
-              </p>
-            </div>
-            <button
-              onClick={() => setParentReminder(!parentReminder)}
-              className={`w-11 h-6 rounded-full transition-colors relative p-0.5 ${
-                parentReminder ? 'bg-primary' : 'bg-surface-container'
-              }`}
-            >
-              <div
-                className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                  parentReminder ? 'translate-x-5' : 'translate-x-0'
-                }`}
-              />
-            </button>
-          </div>
-        </section>
-
-        {/* Help & Support */}
-        <section className="p-4 rounded-3xl bg-surface-container-low border border-outline-variant/30 text-xs text-center space-y-2">
-          <p className="text-on-surface-variant">
-            Butuh bantuan pemesanan atau konsultasi kurikulum?
-          </p>
-          <a
-            href="https://wa.me/6281234567890?text=Halo%20Admin%20TentorKeun,%20saya%20butuh%20bantuan%20konsultasi%20tentor"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow hover:bg-emerald-700 transition-colors"
-          >
-            <MaterialIcon name="support_agent" className="text-sm" />
-            <span>Hubungi Konsultan via WhatsApp</span>
-          </a>
-        </section>
+          </Reveal>
+        </div>
       </main>
 
       <BottomNav />
     </div>
   );
 }
-

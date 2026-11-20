@@ -59,7 +59,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
             >
               <MaterialIcon
                 name={isBookmarked ? 'bookmark_added' : 'bookmark_border'}
-                className={`text-[22px] ${isBookmarked ? 'text-primary' : 'text-on-surface'}`}
+                className={`text-[1.375rem] ${isBookmarked ? 'text-primary' : 'text-on-surface'}`}
                 filled={isBookmarked}
               />
             </button>
@@ -76,7 +76,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
               }}
               className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/50 transition-colors"
             >
-              <MaterialIcon name="share" className="text-[22px] text-on-surface" />
+              <MaterialIcon name="share" className="text-[1.375rem] text-on-surface" />
             </button>
           </div>
         }
@@ -84,21 +84,21 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
 
       <main className="px-4 space-y-5 pt-3">
         {/* Tutor Hero Card */}
-        <section className="bg-surface rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col items-center text-center relative overflow-hidden">
+        <section className="bg-surface rounded-2xl p-5 border border-outline-variant/30 flex flex-col items-center text-center relative overflow-hidden">
           <div className="relative mb-3">
             <img
               src={tutor.avatar_url}
               alt={tutor.name}
-              className="w-24 h-24 rounded-3xl object-cover ring-4 ring-primary/10 shadow-md"
+              className="w-24 h-24 rounded-2xl object-cover ring-4 ring-primary/10 "
             />
             {tutor.verified && (
-              <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center ring-2 ring-surface shadow">
+              <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center ring-2 ring-surface ">
                 <MaterialIcon name="verified" className="text-base" />
               </span>
             )}
           </div>
 
-          <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider mb-1.5">
+          <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[0.75rem] font-bold mb-1.5">
             {tutor.badge}
           </span>
 
@@ -112,21 +112,21 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
           {/* Stats Badges */}
           <div className="grid grid-cols-3 gap-2 w-full mt-4 pt-4 border-t border-outline-variant/20">
             <div className="p-2 rounded-2xl bg-surface-container-low text-center">
-              <div className="flex items-center justify-center gap-1 text-amber-500 font-bold text-sm">
+              <div className="flex items-center justify-center gap-1 text-primary font-bold text-sm">
                 <MaterialIcon name="star" className="text-base" filled />
                 <span className="text-on-surface">{tutor.rating}</span>
               </div>
-              <span className="text-[10px] text-on-surface-variant block mt-0.5">Rating Tentor</span>
+              <span className="text-[0.6875rem] text-on-surface-variant block mt-0.5">Rating Tentor</span>
             </div>
 
             <div className="p-2 rounded-2xl bg-surface-container-low text-center">
               <span className="font-bold text-sm text-primary block">{tutor.reviews_count}+</span>
-              <span className="text-[10px] text-on-surface-variant block mt-0.5">Sesi Selesai</span>
+              <span className="text-[0.6875rem] text-on-surface-variant block mt-0.5">Sesi Selesai</span>
             </div>
 
             <div className="p-2 rounded-2xl bg-surface-container-low text-center">
-              <span className="font-bold text-sm text-emerald-600 block">100%</span>
-              <span className="text-[10px] text-on-surface-variant block mt-0.5">Kehadiran</span>
+              <span className="font-bold text-sm text-primary block">100%</span>
+              <span className="text-[0.6875rem] text-on-surface-variant block mt-0.5">Kehadiran</span>
             </div>
           </div>
         </section>
@@ -137,7 +137,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
             onClick={() => setActiveTab('profil')}
             className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'profil'
-                ? 'bg-surface text-primary shadow-sm'
+                ? 'bg-surface text-primary '
                 : 'text-on-surface-variant'
             }`}
           >
@@ -147,7 +147,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
             onClick={() => setActiveTab('slot')}
             className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'slot'
-                ? 'bg-surface text-primary shadow-sm'
+                ? 'bg-surface text-primary '
                 : 'text-on-surface-variant'
             }`}
           >
@@ -157,7 +157,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
             onClick={() => setActiveTab('ulasan')}
             className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'ulasan'
-                ? 'bg-surface text-primary shadow-sm'
+                ? 'bg-surface text-primary '
                 : 'text-on-surface-variant'
             }`}
           >
@@ -168,43 +168,43 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
         {activeTab === 'profil' && (
           <div className="space-y-4 animate-in fade-in duration-200">
             {/* Bio & Pengalaman */}
-            <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-2">
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <section className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-2">
+              <h3 className="font-bold text-xs text-on-surface-variant">
                 Tentang & Filosofi Mengajar
               </h3>
               <p className="text-xs text-on-surface leading-relaxed">{tutor.bio}</p>
               <div className="pt-2 flex items-center gap-2">
-                <span className="text-[11px] font-bold text-primary bg-primary/5 px-2.5 py-1 rounded-xl border border-primary/20">
+                <span className="text-[0.75rem] font-bold text-primary bg-primary/5 px-2.5 py-1 rounded-xl border border-primary/20">
                   Gaya: {tutor.teaching_style}
                 </span>
               </div>
             </section>
 
             {/* Mode Belajar & Cakupan Lokasi */}
-            <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <section className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
+              <h3 className="font-bold text-xs text-on-surface-variant">
                 Mode Belajar & Wilayah
               </h3>
               <div className="grid grid-cols-1 gap-2">
                 <div className="p-3 rounded-2xl bg-surface-container-low flex items-start gap-3 border border-outline-variant/20">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-secondary-container text-primary flex items-center justify-center flex-shrink-0">
                     <MaterialIcon name="home_pin" className="text-xl" />
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-on-surface">Tatap Muka Langsung</h4>
-                    <p className="text-[11px] text-on-surface-variant mt-0.5">
+                    <p className="text-[0.75rem] text-on-surface-variant mt-0.5">
                       Tentor hadir langsung ke rumah siswa. Area: {tutor.location}.
                     </p>
                   </div>
                 </div>
 
                 <div className="p-3 rounded-2xl bg-surface-container-low flex items-start gap-3 border border-outline-variant/20">
-                  <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-secondary-container text-secondary flex items-center justify-center flex-shrink-0">
                     <MaterialIcon name="videocam" className="text-xl" />
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-on-surface">Online Interaktif HD</h4>
-                    <p className="text-[11px] text-on-surface-variant mt-0.5">
+                    <p className="text-[0.75rem] text-on-surface-variant mt-0.5">
                       Sesi 1-on-1 via Google Meet + papan tulis digital interaktif & rekaman sesi.
                     </p>
                   </div>
@@ -213,8 +213,8 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
             </section>
 
             {/* Topik & Mata Pelajaran */}
-            <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-2">
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <section className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-2">
+              <h3 className="font-bold text-xs text-on-surface-variant">
                 Materi / Kurikulum yang Dikuasai
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -233,7 +233,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
 
         {activeTab === 'slot' && (
           <div className="space-y-3 animate-in fade-in duration-200">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <h3 className="font-bold text-xs text-on-surface-variant">
               Slot Tersedia Pekan Ini
             </h3>
             {slots.map((slot) => (
@@ -249,7 +249,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
                     <p className="font-bold text-xs text-on-surface">
                       {slot.day_name}, {slot.date}
                     </p>
-                    <p className="text-[11px] text-on-surface-variant">
+                    <p className="text-[0.75rem] text-on-surface-variant">
                       {slot.time_start} - {slot.time_end} WIB •{' '}
                       {slot.mode === 'tatap_muka' ? 'Tatap Muka' : 'Online'}
                     </p>
@@ -257,7 +257,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
                 </div>
                 <button
                   onClick={() => setIsSheetOpen(true)}
-                  className="px-3 py-1.5 rounded-xl bg-primary text-white text-xs font-bold shadow hover:bg-primary-container"
+                  className="px-3 py-1.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-container"
                 >
                   Pilih
                 </button>
@@ -268,7 +268,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
 
         {activeTab === 'ulasan' && (
           <div className="space-y-3 animate-in fade-in duration-200">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <h3 className="font-bold text-xs text-on-surface-variant">
               Testimoni Siswa & Orang Tua
             </h3>
             {reviews.map((rev, i) => (
@@ -279,15 +279,15 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-bold text-xs text-on-surface">{rev.name}</h4>
-                    <p className="text-[10px] text-on-surface-variant">{rev.grade}</p>
+                    <p className="text-[0.6875rem] text-on-surface-variant">{rev.grade}</p>
                   </div>
-                  <div className="flex items-center gap-1 text-amber-500">
+                  <div className="flex items-center gap-1 text-primary">
                     <MaterialIcon name="star" className="text-sm" filled />
                     <span className="text-xs font-bold text-on-surface">{rev.rating}.0</span>
                   </div>
                 </div>
                 <p className="text-xs text-on-surface-variant leading-relaxed">&ldquo;{rev.text}&rdquo;</p>
-                <span className="text-[10px] text-outline block">{rev.date}</span>
+                <span className="text-[0.6875rem] text-outline block">{rev.date}</span>
               </div>
             ))}
           </div>
@@ -295,10 +295,10 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
       </main>
 
       {/* Sticky Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 p-3 shadow-lg">
-        <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+      <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 bg-surface border-t border-outline-variant/30 p-3 ">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
           <div>
-            <span className="text-[10px] text-on-surface-variant block">Tarif Sesi Belajar</span>
+            <span className="text-[0.6875rem] text-on-surface-variant block">Tarif Sesi Belajar</span>
             <span className="text-base font-extrabold text-primary">
               Rp {tutor.hourly_rate.toLocaleString('id-ID')}
               <span className="text-xs font-normal text-on-surface-variant"> /sesi (90 mnt)</span>
@@ -307,7 +307,7 @@ export default function TutorProfilePage({ params }: TutorProfilePageProps) {
 
           <button
             onClick={() => setIsSheetOpen(true)}
-            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-primary/25 active:scale-95 transition-all flex items-center gap-1.5"
+            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold active:scale-95 transition-all flex items-center gap-1.5"
           >
             <MaterialIcon name="lock_clock" className="text-base" />
             <span>Kunci Slot Belajar</span>

@@ -53,14 +53,14 @@ export default function AiMatchmakingResultPage() {
             </div>
             <div>
               <p className="font-bold text-xs text-on-surface">{data.studentName}</p>
-              <p className="text-[11px] text-on-surface-variant">
-                Kelas 12 SMA • Visual & Analitis
+              <p className="text-[0.75rem] text-on-surface-variant">
+                Kelas 12 SMA, Visual & Analitis
               </p>
             </div>
           </div>
           <Link
             href="/ai-matchmaking"
-            className="text-[11px] font-bold text-primary hover:underline flex items-center gap-0.5"
+            className="text-[0.75rem] font-bold text-primary hover:underline flex items-center gap-0.5"
           >
             <span>Ubah Kriteria</span>
             <MaterialIcon name="edit" className="text-xs" />
@@ -68,10 +68,10 @@ export default function AiMatchmakingResultPage() {
         </div>
 
         {/* AI Insight Box */}
-        <div className="p-4 rounded-3xl bg-surface-container-low border border-primary/20 space-y-2">
+        <div className="p-4 rounded-2xl bg-surface-container-low border border-primary/20 space-y-2">
           <div className="flex items-center gap-2">
             <MaterialIcon name="smart_toy" className="text-primary text-base" />
-            <h3 className="font-bold text-xs text-primary uppercase tracking-wider">
+            <h3 className="font-bold text-xs text-primary ">
               Analisis Algoritma AI
             </h3>
           </div>
@@ -84,16 +84,16 @@ export default function AiMatchmakingResultPage() {
         {topTutor && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1">
-                <MaterialIcon name="military_tech" className="text-amber-500 text-base" />
+              <span className="text-xs font-bold text-primary flex items-center gap-1">
+                <MaterialIcon name="military_tech" className="text-primary text-base" />
                 Rekomendasi Utama (Skor Tertinggi)
               </span>
-              <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              <span className="text-xs font-black text-primary bg-secondary-container px-2 py-0.5 rounded-full border border-outline-variant">
                 {topTutor.match_score || 98}% Cocok
               </span>
             </div>
 
-            <div className="p-4 rounded-3xl bg-gradient-to-br from-primary/5 via-surface to-secondary-container/10 border-2 border-primary/30 shadow-md space-y-3">
+            <div className="p-4 rounded-2xl bg-surface-container-low border-2 border-primary/30 space-y-3">
               <div className="flex items-start gap-3">
                 <img
                   src={topTutor.avatar_url}
@@ -101,7 +101,7 @@ export default function AiMatchmakingResultPage() {
                   className="w-16 h-16 rounded-2xl object-cover ring-2 ring-primary/20"
                 />
                 <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  <span className="text-[0.6875rem] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                     {topTutor.badge}
                   </span>
                   <Link href={`/tentor/${topTutor.id}`}>
@@ -111,11 +111,11 @@ export default function AiMatchmakingResultPage() {
                   </Link>
                   <p className="text-xs text-on-surface-variant truncate">{topTutor.university}</p>
                   <div className="flex items-center gap-2 mt-1 text-xs">
-                    <span className="flex items-center gap-0.5 text-amber-500 font-bold">
+                    <span className="flex items-center gap-0.5 text-primary font-bold">
                       <MaterialIcon name="star" className="text-sm" filled />
                       {topTutor.rating}
                     </span>
-                    <span className="text-outline-variant">•</span>
+                    <span className="text-outline">•</span>
                     <span className="text-on-surface-variant">{topTutor.reviews_count} Sesi</span>
                   </div>
                 </div>
@@ -128,16 +128,16 @@ export default function AiMatchmakingResultPage() {
 
               <div className="pt-2 flex items-center justify-between border-t border-outline-variant/20">
                 <div>
-                  <span className="text-[10px] text-on-surface-variant block">Mulai dari</span>
+                  <span className="text-[0.6875rem] text-on-surface-variant block">Mulai dari</span>
                   <span className="text-sm font-extrabold text-primary">
                     Rp {topTutor.hourly_rate.toLocaleString('id-ID')}
-                    <span className="text-[10px] font-normal text-on-surface-variant"> /sesi</span>
+                    <span className="text-[0.6875rem] font-normal text-on-surface-variant"> /sesi</span>
                   </span>
                 </div>
 
                 <button
                   onClick={() => setSelectedTutor(topTutor)}
-                  className="px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-md shadow-primary/20 hover:bg-primary-container active:scale-95 transition-all flex items-center gap-1.5"
+                  className="px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-container active:scale-95 transition-all flex items-center gap-1.5"
                 >
                   <MaterialIcon name="lock_clock" className="text-sm" />
                   <span>Kunci Slot Pilihan AI</span>
@@ -150,7 +150,7 @@ export default function AiMatchmakingResultPage() {
         {/* Alternative Candidates */}
         {otherTutors.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
+            <h3 className="font-bold text-xs text-on-surface-variant">
               Kandidat Rekomendasi Lainnya
             </h3>
             {otherTutors.map((tutor) => (
@@ -160,10 +160,10 @@ export default function AiMatchmakingResultPage() {
         )}
 
         {/* Comparison Matrix Table */}
-        <section className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+        <section className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
           <div className="flex items-center gap-2">
             <MaterialIcon name="compare" className="text-primary text-lg" />
-            <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+            <h3 className="font-bold text-xs text-on-surface">
               Matriks Komparasi 3 Kandidat
             </h3>
           </div>
@@ -178,7 +178,7 @@ export default function AiMatchmakingResultPage() {
                   <th className="py-2 pl-2 font-bold text-on-surface">Kak Nabila</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/20 text-[11px]">
+              <tbody className="divide-y divide-outline-variant/20 text-[0.75rem]">
                 <tr>
                   <td className="py-2.5 pr-2 font-semibold text-on-surface-variant">Gaya Mengajar</td>
                   <td className="py-2.5 px-2 font-bold text-primary">Visual & Mindmap</td>
@@ -187,9 +187,9 @@ export default function AiMatchmakingResultPage() {
                 </tr>
                 <tr>
                   <td className="py-2.5 pr-2 font-semibold text-on-surface-variant">Kenaikan Skor</td>
-                  <td className="py-2.5 px-2 font-bold text-emerald-600">+175 Poin</td>
-                  <td className="py-2.5 px-2 text-emerald-600">+160 Poin</td>
-                  <td className="py-2.5 pl-2 text-emerald-600">+140 Poin</td>
+                  <td className="py-2.5 px-2 font-bold text-primary">+175 Poin</td>
+                  <td className="py-2.5 px-2 text-primary">+160 Poin</td>
+                  <td className="py-2.5 pl-2 text-primary">+140 Poin</td>
                 </tr>
                 <tr>
                   <td className="py-2.5 pr-2 font-semibold text-on-surface-variant">Tarif Sesi</td>
@@ -199,7 +199,7 @@ export default function AiMatchmakingResultPage() {
                 </tr>
                 <tr>
                   <td className="py-2.5 pr-2 font-semibold text-on-surface-variant">Skor Match AI</td>
-                  <td className="py-2.5 px-2 font-black text-emerald-600">98% Match</td>
+                  <td className="py-2.5 px-2 font-black text-primary">98% Match</td>
                   <td className="py-2.5 px-2 font-bold text-primary">94% Match</td>
                   <td className="py-2.5 pl-2 font-bold text-secondary">89% Match</td>
                 </tr>

@@ -7,12 +7,14 @@ import { MaterialIcon } from '@/components/common/MaterialIcon';
 import { TentorService } from '@/lib/supabase/service';
 import { ChatMessage, Booking } from '@/lib/types';
 import { MOCK_INITIAL_BOOKING } from '@/lib/data/mock-data';
+import { getTutorReply, typingDelay } from '@/lib/chat-reply';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [booking, setBooking] = useState<Booking | null>(null);
   const [showFileModal, setShowFileModal] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isTyping]);
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || inputText;
@@ -43,16 +45,20 @@ export default function ChatPage() {
     setMessages((prev) => [...prev, newMsg]);
     setInputText('');
 
-    // Simulate friendly tutor instant reply after 1.5 seconds if first reply
+    // Simulasi balasan tentor: membaca isi pesan, tidak mengulang jawaban yang sama
+    const recentTutorTexts = messages.filter((m) => m.sender_type === 'tutor').map((m) => m.text);
+    const replyText = getTutorReply(text, recentTutorTexts, booking);
+    setIsTyping(true);
     setTimeout(async () => {
       const reply = await TentorService.sendChatMessage({
         booking_id: booking?.id || 'order-tk-884219',
         sender_type: 'tutor',
-        sender_name: 'Kak Sarah Amanda, S.Si',
-        text: 'Siap Arga! Catatan sudah aku rekap. Nanti kita bedah bareng soal nomor 3 dan 5 ya! 👍',
+        sender_name: booking?.tutor_name || 'Kak Sarah Amanda, S.Si',
+        text: replyText,
       });
+      setIsTyping(false);
       setMessages((prev) => [...prev, reply]);
-    }, 1500);
+    }, typingDelay(replyText));
   };
 
   const quickReplies = [
@@ -62,9 +68,10 @@ export default function ChatPage() {
   ];
 
   return (
-    <div className="flex flex-col h-[100dvh] w-full mx-auto bg-surface overflow-hidden">
+    <div className="flex h-[100dvh] w-full bg-surface overflow-hidden">
+      <div className="flex flex-col flex-1 min-w-0 lg:border-r lg:border-outline-variant">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 px-3 py-2 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-surface border-b border-outline-variant/30 px-3 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <Link
             href="/jadwal"
@@ -79,15 +86,15 @@ export default function ChatPage() {
               alt="Kak Sarah"
               className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20"
             />
-            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-surface" />
+            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-secondary-container0 ring-2 ring-surface" />
           </div>
 
           <div className="flex flex-col min-w-0">
             <h2 className="font-bold text-xs text-on-surface truncate">
               Kak Sarah Amanda, S.Si
             </h2>
-            <div className="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
-              <span className="text-emerald-600 font-bold">Online</span>
+            <div className="flex items-center gap-1.5 text-[0.6875rem] text-on-surface-variant">
+              <span className="text-primary font-bold">Online</span>
               <span>•</span>
               <span className="truncate">Matematika SMA</span>
             </div>
@@ -97,7 +104,7 @@ export default function ChatPage() {
         <div className="flex items-center gap-1">
           <Link
             href="/jadwal"
-            className="px-2.5 py-1.5 rounded-xl bg-surface-container-low text-primary text-[11px] font-bold flex items-center gap-1 border border-outline-variant/30"
+            className="px-2.5 py-1.5 rounded-xl bg-surface-container-low text-primary text-[0.75rem] font-bold flex items-center gap-1 border border-outline-variant/30"
           >
             <MaterialIcon name="qr_code_2" className="text-base" />
             <span>E-Tiket</span>
@@ -106,12 +113,12 @@ export default function ChatPage() {
       </header>
 
       {/* Escrow banner */}
-      <div className="px-4 py-2 bg-emerald-50 border-b border-emerald-100 flex items-center justify-between text-[11px] text-emerald-900">
+      <div className="px-4 py-2 bg-secondary-container border-b border-outline-variant flex items-center justify-between text-[0.75rem] text-primary">
         <div className="flex items-center gap-1.5">
-          <MaterialIcon name="verified_user" className="text-sm text-emerald-600" />
+          <MaterialIcon name="verified_user" className="text-sm text-primary" />
           <span>Dana aman di Rekber TentorKeun</span>
         </div>
-        <Link href="/jadwal" className="font-bold text-emerald-800 hover:underline">
+        <Link href="/jadwal" className="font-bold text-primary hover:underline">
           Lihat Tiket
         </Link>
       </div>
@@ -122,7 +129,7 @@ export default function ChatPage() {
           if (msg.sender_type === 'system') {
             return (
               <div key={msg.id} className="text-center my-2">
-                <span className="inline-block px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-[10px] font-semibold">
+                <span className="inline-block px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-[0.6875rem] font-semibold">
                   {msg.text}
                 </span>
               </div>
@@ -134,12 +141,12 @@ export default function ChatPage() {
           return (
             <div
               key={msg.id}
-              className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-[85%] ${
+              className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} min-w-0 max-w-[85%] ${
                 isMe ? 'ml-auto' : 'mr-auto'
               }`}
             >
               <div
-                className={`p-3.5 rounded-2xl text-xs leading-relaxed space-y-2 shadow-sm ${
+                className={`p-3.5 rounded-2xl text-xs leading-relaxed space-y-2 ${
                   isMe
                     ? 'bg-primary text-white rounded-br-none'
                     : 'bg-surface-container text-on-surface rounded-bl-none border border-outline-variant/20'
@@ -151,22 +158,22 @@ export default function ChatPage() {
                 {msg.file_name && (
                   <div
                     onClick={() => setShowFileModal(true)}
-                    className="p-2.5 rounded-xl bg-surface text-on-surface border border-outline-variant/30 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-surface-container-low transition-colors shadow-sm"
+                    className="w-full p-2.5 rounded-xl bg-surface text-on-surface border border-outline-variant/30 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-surface-container-low transition-colors "
                   >
-                    <div className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-error-container text-error flex items-center justify-center flex-shrink-0">
                       <MaterialIcon name="picture_as_pdf" className="text-base" />
                     </div>
                     <div className="flex-1 min-w-0 text-left">
-                      <p className="font-bold text-[11px] text-primary truncate">
+                      <p className="font-bold text-[0.75rem] text-primary truncate">
                         {msg.file_name}
                       </p>
-                      <p className="text-[10px] text-on-surface-variant">
-                        {msg.file_size} • PDF Document
+                      <p className="text-[0.6875rem] text-on-surface-variant">
+                        {msg.file_size}, PDF Document
                       </p>
                     </div>
                     <button
                       type="button"
-                      className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                      className="w-7 h-7 flex-shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
                     >
                       <MaterialIcon name="download" className="text-sm" />
                     </button>
@@ -174,12 +181,21 @@ export default function ChatPage() {
                 )}
               </div>
 
-              <span className="text-[9px] text-outline-variant mt-1 px-1">
+              <span className="text-[0.6875rem] text-outline mt-1 px-1">
                 {msg.timestamp}
               </span>
             </div>
           );
         })}
+        {isTyping && (
+          <div className="flex items-start" aria-live="polite">
+            <div className="px-4 py-3 rounded-2xl bg-surface-container text-on-surface-variant flex items-center gap-1" aria-label="Tentor sedang mengetik">
+              <span className="w-1.5 h-1.5 rounded-full bg-outline animate-bounce [animation-delay:-0.3s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-outline animate-bounce [animation-delay:-0.15s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-outline animate-bounce" />
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -189,7 +205,7 @@ export default function ChatPage() {
           <button
             key={i}
             onClick={() => handleSendMessage(r)}
-            className="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface text-[10px] font-medium whitespace-nowrap hover:bg-primary/5 hover:text-primary transition-all"
+            className="px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface text-[0.6875rem] font-medium whitespace-nowrap hover:bg-primary/5 hover:text-primary transition-all"
           >
             {r}
           </button>
@@ -224,18 +240,62 @@ export default function ChatPage() {
           <button
             type="submit"
             disabled={!inputText.trim()}
-            className="w-9 h-9 rounded-full bg-primary hover:bg-primary-container disabled:opacity-40 text-white flex items-center justify-center shadow-md shadow-primary/20 transition-all flex-shrink-0"
+            className="w-9 h-9 rounded-full bg-primary hover:bg-primary-container disabled:opacity-40 text-white flex items-center justify-center transition-all flex-shrink-0"
           >
             <MaterialIcon name="send" className="text-sm" />
           </button>
         </form>
       </div>
 
+      </div>
+
+      {/* Panel info sesi (desktop lebar) */}
+      <aside className="hidden xl:flex w-72 flex-shrink-0 flex-col gap-5 p-6 overflow-y-auto bg-surface-container-low">
+        <div>
+          <h2 className="font-bold text-sm text-on-surface-variant mb-3">Sesi ini</h2>
+          {booking && (
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-3">
+                <img src={booking.tutor_avatar} alt={booking.tutor_name} className="w-12 h-12 rounded-lg object-cover" />
+                <div className="min-w-0">
+                  <p className="font-bold text-primary leading-snug">{booking.tutor_name}</p>
+                  <p className="text-on-surface-variant text-xs truncate">{booking.tutor_title}</p>
+                </div>
+              </div>
+              <dl className="space-y-2 pt-2 border-t border-outline-variant">
+                <div>
+                  <dt className="text-xs text-on-surface-variant">Mata pelajaran</dt>
+                  <dd className="font-semibold text-primary">{booking.subject}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-on-surface-variant">Topik</dt>
+                  <dd className="font-semibold text-primary">{booking.topic}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-on-surface-variant">Jadwal</dt>
+                  <dd className="font-semibold text-primary">{booking.session_date}, {booking.session_time}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-on-surface-variant">Cara belajar</dt>
+                  <dd className="font-semibold text-primary">{booking.mode === 'tatap_muka' ? 'Tatap muka' : 'Online'}</dd>
+                </div>
+              </dl>
+            </div>
+          )}
+        </div>
+        <Link
+          href="/jadwal"
+          className="h-10 rounded-lg border border-outline-variant text-sm font-semibold text-primary inline-flex items-center justify-center hover:bg-surface-container transition-colors"
+        >
+          Lihat jadwal
+        </Link>
+      </aside>
+
       {/* File Preview Modal */}
       {showFileModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-surface rounded-3xl p-5 shadow-2xl border border-outline-variant/30 space-y-4 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 mx-auto flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-surface rounded-2xl p-5 shadow-2xl border border-outline-variant/30 space-y-4 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-error-container text-error mx-auto flex items-center justify-center">
               <MaterialIcon name="picture_as_pdf" className="text-3xl" />
             </div>
 
@@ -244,7 +304,7 @@ export default function ChatPage() {
                 Modul-Kalkulus-Cepat-UTBK-SarahAmanda.pdf
               </h3>
               <p className="text-xs text-on-surface-variant mt-1">
-                2.4 MB • Rangkuman Rumus & 30 Soal Prediksi UTBK
+                2.4 MB, Rangkuman Rumus & 30 Soal Prediksi UTBK
               </p>
             </div>
 
@@ -264,7 +324,7 @@ export default function ChatPage() {
                   alert('Mengunduh Modul-Kalkulus-Cepat-UTBK-SarahAmanda.pdf...');
                   setShowFileModal(false);
                 }}
-                className="flex-1 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow flex items-center justify-center gap-1"
+                className="flex-1 py-2.5 rounded-xl bg-primary text-white text-xs font-bold flex items-center justify-center gap-1"
               >
                 <MaterialIcon name="download" className="text-sm" />
                 <span>Unduh File</span>

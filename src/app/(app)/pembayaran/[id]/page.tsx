@@ -81,43 +81,43 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
 
       <main className="px-4 space-y-4 pt-3">
         {/* Countdown Header */}
-        <div className="p-4 rounded-3xl bg-surface border border-outline-variant/30 text-center space-y-1 shadow-sm">
-          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+        <div className="p-4 rounded-2xl bg-surface border border-outline-variant/30 text-center space-y-1 ">
+          <span className="text-[0.75rem] font-bold text-on-surface-variant ">
             Selesaikan Pembayaran Dalam
           </span>
           <div className="flex items-center justify-center gap-1.5 text-error font-extrabold text-2xl tracking-tight">
-            <MaterialIcon name="alarm" className="text-xl animate-pulse" />
+            <MaterialIcon name="alarm" className="text-xl " />
             <span>{formatHours()}</span>
           </div>
-          <p className="text-[10px] text-on-surface-variant">
+          <p className="text-[0.6875rem] text-on-surface-variant">
             Batas waktu: Besok, pukul 14:30 WIB
           </p>
         </div>
 
         {/* VA Card */}
-        <div className="bg-surface rounded-3xl p-5 shadow-sm border border-outline-variant/30 space-y-4">
+        <div className="bg-surface rounded-2xl p-5 border border-outline-variant/30 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-7 rounded-lg bg-blue-700 text-white font-black text-xs flex items-center justify-center tracking-tighter">
+              <div className="w-10 h-7 rounded-lg bg-secondary text-white font-black text-xs flex items-center justify-center tracking-tighter">
                 BCA
               </div>
               <div>
                 <h2 className="font-bold text-sm text-on-surface">{booking.payment_method}</h2>
-                <p className="text-[10px] text-on-surface-variant">Verifikasi Otomatis Real-time</p>
+                <p className="text-[0.6875rem] text-on-surface-variant">Verifikasi Otomatis Real-time</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded-full">
+            <span className="text-[0.6875rem] font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded-full">
               Instant
             </span>
           </div>
 
           {/* VA Number */}
           <div className="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/20 space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+            <span className="text-[0.6875rem] font-bold text-on-surface-variant">
               Nomor Virtual Account
             </span>
             <div className="flex items-center justify-between gap-2">
-              <span className="font-extrabold text-base text-primary tracking-wider select-all">
+              <span className="font-extrabold text-base text-primary select-all">
                 {booking.va_number}
               </span>
               <button
@@ -132,7 +132,7 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
 
           {/* Total Amount */}
           <div className="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/20 space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+            <span className="text-[0.6875rem] font-bold text-on-surface-variant">
               Total Pembayaran Tepat
             </span>
             <div className="flex items-center justify-between gap-2">
@@ -151,16 +151,16 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
         </div>
 
         {/* Escrow Rekber Reminder */}
-        <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5">
-          <MaterialIcon name="verified_user" className="text-emerald-700 text-lg flex-shrink-0 mt-0.5" />
-          <p className="text-[11px] text-emerald-900 leading-relaxed">
+        <div className="p-3.5 rounded-2xl bg-secondary-container border border-outline-variant flex items-start gap-2.5">
+          <MaterialIcon name="verified_user" className="text-primary text-lg flex-shrink-0 mt-0.5" />
+          <p className="text-[0.75rem] text-primary leading-relaxed">
             <strong>Proteksi Rekber TentorKeun:</strong> Uang Anda tidak langsung diberikan ke pengajar. Dana disimpan di rekening penampung resmi sampai sesi les selesai dan E-Tiket Anda divalidasi.
           </p>
         </div>
 
         {/* Order Details Accordion Snapshot */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-2 text-xs">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface pb-2 border-b border-outline-variant/20">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-2 text-xs">
+          <h3 className="font-bold text-xs text-on-surface pb-2 border-b border-outline-variant/20">
             Ringkasan Sesi Belajar
           </h3>
           <div className="flex justify-between">
@@ -182,8 +182,8 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
         </div>
 
         {/* Payment Guide Accordion */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface pb-2 border-b border-outline-variant/20">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
+          <h3 className="font-bold text-xs text-on-surface pb-2 border-b border-outline-variant/20">
             Panduan Cara Membayar
           </h3>
 
@@ -198,7 +198,7 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
                 onClick={() => setActiveInstruction(tab.id as any)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   activeInstruction === tab.id
-                    ? 'bg-white text-primary shadow-sm'
+                    ? 'bg-white text-primary '
                     : 'text-on-surface-variant'
                 }`}
               >
@@ -243,7 +243,7 @@ export default function PaymentInstructionPage({ params }: PaymentInstructionPag
           <button
             onClick={handleSimulatePayment}
             disabled={isChecking}
-            className="w-full py-3.5 rounded-2xl bg-primary hover:bg-primary-container text-white font-bold text-xs shadow-lg shadow-primary/20 active:scale-98 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3.5 rounded-2xl bg-primary hover:bg-primary-container text-white font-bold text-xs active:scale-98 transition-all flex items-center justify-center gap-2"
           >
             {isChecking ? (
               <>

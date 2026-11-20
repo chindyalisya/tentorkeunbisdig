@@ -92,19 +92,19 @@ export default function AiMatchmakingPage() {
 
       <main className="px-4 space-y-5 pt-3">
         {/* Intro Banner */}
-        <section className="p-4 rounded-3xl bg-gradient-to-br from-primary via-primary-container to-secondary text-white shadow-md relative overflow-hidden">
+        <section className="p-4 rounded-2xl bg-primary text-white relative overflow-hidden">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
-              <MaterialIcon name="auto_awesome" className="text-sm text-amber-300" />
+              <MaterialIcon name="auto_awesome" className="text-sm text-primary-fixed-dim" />
             </span>
-            <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+            <span className="text-[0.75rem] font-bold text-primary-fixed-dim ">
               AI Precision Matchmaking
             </span>
           </div>
           <h2 className="font-bold text-base text-white leading-tight">
             Temukan Tentor Berkarakter Tepat
           </h2>
-          <p className="text-xs text-slate-200 mt-1 leading-relaxed">
+          <p className="text-xs text-on-primary-container mt-1 leading-relaxed">
             Sistem kami memetakan gaya belajar kognitif dan kurikulum siswa untuk merekomendasikan pengajar paling kompatibel.
           </p>
         </section>
@@ -112,16 +112,16 @@ export default function AiMatchmakingPage() {
         {/* Form Container */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 1. Data Siswa */}
-          <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+          <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
               <MaterialIcon name="person" className="text-primary text-lg" />
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+              <h3 className="font-bold text-xs text-on-surface">
                 1. Data Siswa & Target Belajar
               </h3>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-on-surface-variant block mb-1">
+              <label className="text-[0.75rem] font-bold text-on-surface-variant block mb-1">
                 Nama Siswa
               </label>
               <input
@@ -135,7 +135,7 @@ export default function AiMatchmakingPage() {
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[11px] font-bold text-on-surface-variant block mb-1">
+                <label className="text-[0.75rem] font-bold text-on-surface-variant block mb-1">
                   Jenjang & Kelas
                 </label>
                 <select
@@ -153,7 +153,7 @@ export default function AiMatchmakingPage() {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-on-surface-variant block mb-1">
+                <label className="text-[0.75rem] font-bold text-on-surface-variant block mb-1">
                   Kurikulum
                 </label>
                 <select
@@ -169,7 +169,7 @@ export default function AiMatchmakingPage() {
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-on-surface-variant block mb-1">
+              <label className="text-[0.75rem] font-bold text-on-surface-variant block mb-1">
                 Target Utama Belajar
               </label>
               <input
@@ -182,10 +182,10 @@ export default function AiMatchmakingPage() {
           </div>
 
           {/* 2. Gaya Belajar Siswa */}
-          <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+          <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
               <MaterialIcon name="psychology_alt" className="text-secondary text-lg" />
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+              <h3 className="font-bold text-xs text-on-surface">
                 2. Karakter & Gaya Belajar Siswa
               </h3>
             </div>
@@ -215,7 +215,7 @@ export default function AiMatchmakingPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-on-surface">{opt.title}</p>
-                      <p className="text-[11px] text-on-surface-variant mt-0.5 leading-relaxed">
+                      <p className="text-[0.75rem] text-on-surface-variant mt-0.5 leading-relaxed">
                         {opt.desc}
                       </p>
                     </div>
@@ -226,10 +226,10 @@ export default function AiMatchmakingPage() {
           </div>
 
           {/* 3. Materi yang Dirasa Sulit */}
-          <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+          <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
-              <MaterialIcon name="priority_high" className="text-amber-600 text-lg" />
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+              <MaterialIcon name="priority_high" className="text-primary text-lg" />
+              <h3 className="font-bold text-xs text-on-surface">
                 3. Bab / Topik yang Sering Menjadi Kendala
               </h3>
             </div>
@@ -277,10 +277,10 @@ export default function AiMatchmakingPage() {
           </div>
 
           {/* 4. Preferensi Mode & Anggaran */}
-          <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+          <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
               <MaterialIcon name="tune" className="text-primary text-lg" />
-              <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+              <h3 className="font-bold text-xs text-on-surface">
                 4. Mode & Maksimal Anggaran
               </h3>
             </div>
@@ -297,7 +297,7 @@ export default function AiMatchmakingPage() {
                   onClick={() => setMode(m.id as any)}
                   className={`py-2 px-1 text-center rounded-xl border text-xs font-bold transition-all ${
                     mode === m.id
-                      ? 'border-primary bg-primary text-white shadow-sm'
+                      ? 'border-primary bg-primary text-white '
                       : 'border-outline-variant/30 text-on-surface'
                   }`}
                 >
@@ -329,9 +329,9 @@ export default function AiMatchmakingPage() {
           <button
             type="submit"
             disabled={isAnalyzing}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary via-primary-container to-secondary text-white font-bold text-sm shadow-xl shadow-primary/25 active:scale-98 transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl bg-primary text-white font-bold text-sm active:scale-98 transition-all flex items-center justify-center gap-2"
           >
-            <MaterialIcon name="auto_awesome" className="text-amber-300 text-lg" />
+            <MaterialIcon name="auto_awesome" className="text-primary-fixed-dim text-lg" />
             <span>Mulai Analisis Matchmaking AI</span>
           </button>
         </form>
@@ -339,8 +339,8 @@ export default function AiMatchmakingPage() {
 
       {/* Loading Modal Overlay */}
       {isAnalyzing && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in">
-          <div className="w-full max-w-sm bg-surface rounded-3xl p-6 shadow-2xl border border-outline-variant/30 text-center space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-6 animate-in fade-in">
+          <div className="w-full max-w-sm bg-surface rounded-2xl p-6 shadow-2xl border border-outline-variant/30 text-center space-y-4">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 mx-auto flex items-center justify-center text-primary relative">
               <MaterialIcon name="psychology" className="text-3xl animate-bounce" />
               <div className="absolute inset-0 rounded-2xl border-2 border-primary border-t-transparent animate-spin" />

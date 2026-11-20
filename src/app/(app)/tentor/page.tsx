@@ -69,11 +69,11 @@ function TentorCatalogContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari guru, materi, atau topik..."
-              className="w-full h-11 pl-10 pr-9 rounded-2xl bg-surface border border-outline-variant/40 text-xs text-on-surface placeholder:text-on-surface-variant/70 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              className="w-full h-11 pl-10 pr-9 rounded-2xl bg-surface border border-outline-variant/40 text-xs text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
             <MaterialIcon
               name="search"
-              className="absolute left-3 top-2.5 text-[20px] text-on-surface-variant"
+              className="absolute left-3 top-2.5 text-[1.25rem] text-on-surface-variant"
             />
             {search && (
               <button
@@ -87,7 +87,7 @@ function TentorCatalogContent() {
 
           <button
             onClick={() => setShowFilterDrawer(true)}
-            className="h-11 px-3.5 rounded-2xl bg-surface border border-outline-variant/40 text-xs font-bold text-on-surface flex items-center gap-1.5 hover:bg-surface-container-low transition-colors shadow-sm"
+            className="h-11 px-3.5 rounded-2xl bg-surface border border-outline-variant/40 text-xs font-bold text-on-surface flex items-center gap-1.5 hover:bg-surface-container-low transition-colors "
           >
             <MaterialIcon name="tune" className="text-lg text-primary" />
             <span>Filter</span>
@@ -104,7 +104,7 @@ function TentorCatalogContent() {
                 onClick={() => setSelectedSubject(sub)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
                   isSelected
-                    ? 'bg-primary text-white border-primary shadow-sm'
+                    ? 'bg-primary text-white border-primary '
                     : 'bg-surface text-on-surface border-outline-variant/30 hover:bg-surface-container-low'
                 }`}
               >
@@ -119,9 +119,9 @@ function TentorCatalogContent() {
           <div className="flex items-center gap-1 bg-surface-container p-1 rounded-xl">
             <button
               onClick={() => setSelectedMode('all')}
-              className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold text-[0.75rem] transition-all ${
                 selectedMode === 'all'
-                  ? 'bg-white text-primary shadow-sm'
+                  ? 'bg-white text-primary '
                   : 'text-on-surface-variant'
               }`}
             >
@@ -129,9 +129,9 @@ function TentorCatalogContent() {
             </button>
             <button
               onClick={() => setSelectedMode('tatap_muka')}
-              className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold text-[0.75rem] transition-all ${
                 selectedMode === 'tatap_muka'
-                  ? 'bg-white text-primary shadow-sm'
+                  ? 'bg-white text-primary '
                   : 'text-on-surface-variant'
               }`}
             >
@@ -139,9 +139,9 @@ function TentorCatalogContent() {
             </button>
             <button
               onClick={() => setSelectedMode('online')}
-              className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold text-[0.75rem] transition-all ${
                 selectedMode === 'online'
-                  ? 'bg-white text-primary shadow-sm'
+                  ? 'bg-white text-primary '
                   : 'text-on-surface-variant'
               }`}
             >
@@ -149,25 +149,25 @@ function TentorCatalogContent() {
             </button>
           </div>
 
-          <span className="text-[11px] text-on-surface-variant">
+          <span className="text-[0.75rem] text-on-surface-variant">
             Ditemukan <strong>{filteredTutors.length}</strong> tentor
           </span>
         </div>
 
         {/* AI Help Banner */}
-        <div className="p-4 rounded-3xl bg-gradient-to-r from-primary to-primary-container text-white shadow-md relative overflow-hidden">
+        <div className="p-4 rounded-2xl bg-primary text-white relative overflow-hidden">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
               <MaterialIcon name="psychology" className="text-sm text-white" />
             </span>
             <h3 className="font-bold text-xs text-white">Bingung Memilih dari Puluhan Tentor?</h3>
           </div>
-          <p className="text-[11px] text-slate-200 leading-relaxed mb-3">
+          <p className="text-[0.75rem] text-on-primary-container leading-relaxed mb-3">
             Biar sistem AI TentorKeun yang mencocokkan pengajar paling pas sesuai gaya belajar dan target nilai UTBK Anda dalam hitungan detik!
           </p>
           <Link
             href="/ai-matchmaking"
-            className="w-full py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow"
+            className="w-full py-2 px-3 rounded-xl bg-primary hover:bg-primary text-on-surface text-xs font-bold transition-all flex items-center justify-center gap-1.5 "
           >
             <MaterialIcon name="auto_awesome" className="text-sm" />
             <span>Coba Matchmaking AI Sekarang</span>
@@ -175,13 +175,13 @@ function TentorCatalogContent() {
         </div>
 
         {/* Tutor Cards List */}
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 xl:grid-cols-3">
           {filteredTutors.length > 0 ? (
             filteredTutors.map((tutor) => (
               <TutorCard key={tutor.id} tutor={tutor} />
             ))
           ) : (
-            <div className="md:col-span-2 xl:col-span-3 p-8 text-center bg-surface rounded-3xl border border-outline-variant/30 space-y-3">
+            <div className="md:col-span-2 xl:col-span-3 p-8 text-center bg-surface rounded-2xl border border-outline-variant/30 space-y-3">
               <div className="w-12 h-12 rounded-full bg-surface-container mx-auto flex items-center justify-center text-on-surface-variant">
                 <MaterialIcon name="search_off" className="text-2xl" />
               </div>
@@ -206,8 +206,8 @@ function TentorCatalogContent() {
 
       {/* Filter Drawer / Modal */}
       {showFilterDrawer && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0">
-          <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border-t border-outline-variant/30 space-y-4 animate-in slide-in-from-bottom duration-200">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0">
+          <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-2xl p-5 shadow-2xl border-t border-outline-variant/30 space-y-4 animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
               <h3 className="font-bold text-base text-primary">Urutkan & Saring Tentor</h3>
               <button
@@ -219,7 +219,7 @@ function TentorCatalogContent() {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-2">
+              <label className="text-xs font-bold text-on-surface-variant block mb-2">
                 Urutkan Berdasarkan
               </label>
               <div className="space-y-1.5">
@@ -246,7 +246,7 @@ function TentorCatalogContent() {
 
             <button
               onClick={() => setShowFilterDrawer(false)}
-              className="w-full py-3 rounded-2xl bg-primary text-white text-xs font-bold shadow-md shadow-primary/20"
+              className="w-full py-3 rounded-2xl bg-primary text-white text-xs font-bold "
             >
               Terapkan Filter
             </button>

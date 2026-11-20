@@ -44,14 +44,14 @@ function CheckoutContent() {
       sessions: 4,
       multiplier: 4,
       discountPercent: 10,
-      badge: 'Paling Populer • Hemat 10%',
+      badge: 'Paling Populer, Hemat 10%',
     },
     '8_sesi': {
       name: 'Paket Master 8 Sesi Garansi Naik Nilai',
       sessions: 8,
       multiplier: 8,
       discountPercent: 20,
-      badge: 'Garansi Naik Nilai • Hemat 20%',
+      badge: 'Garansi Naik Nilai, Hemat 20%',
     },
   };
 
@@ -116,19 +116,19 @@ function CheckoutContent() {
 
       <main className="px-4 space-y-4 pt-3">
         {/* Tutor Card Snapshot */}
-        <div className="p-4 rounded-3xl bg-surface border border-outline-variant/30 shadow-sm flex items-start gap-3">
+        <div className="p-4 rounded-2xl bg-surface border border-outline-variant/30 flex items-start gap-3">
           <img
             src={tutor.avatar_url}
             alt={tutor.name}
             className="w-14 h-14 rounded-2xl object-cover ring-2 ring-primary/20 flex-shrink-0"
           />
           <div className="flex-1 min-w-0">
-            <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full inline-block mb-1">
+            <span className="text-[0.6875rem] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full inline-block mb-1">
               {tutor.badge}
             </span>
             <h3 className="font-bold text-sm text-on-surface truncate">{tutor.name}</h3>
-            <p className="text-[11px] text-on-surface-variant truncate">{tutor.university}</p>
-            <div className="flex items-center gap-2 mt-1 text-[11px] text-on-surface-variant">
+            <p className="text-[0.75rem] text-on-surface-variant truncate">{tutor.university}</p>
+            <div className="flex items-center gap-2 mt-1 text-[0.75rem] text-on-surface-variant">
               <span className="font-semibold text-primary">{modeParam === 'tatap_muka' ? 'Tatap Muka' : 'Online HD'}</span>
               <span>•</span>
               <span>{timeParam}</span>
@@ -137,12 +137,12 @@ function CheckoutContent() {
         </div>
 
         {/* 1. Pilih Paket Belajar */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface">
+            <h3 className="font-bold text-xs text-on-surface">
               Pilih Paket Belajar
             </h3>
-            <span className="text-[11px] font-bold text-secondary">Garansi Nilai Naik</span>
+            <span className="text-[0.75rem] font-bold text-secondary">Garansi Nilai Naik</span>
           </div>
 
           <div className="space-y-2">
@@ -159,7 +159,7 @@ function CheckoutContent() {
                 title: '4 Sesi Intensif Bulanan',
                 desc: '1x seminggu pemantapan konsep & latihan soal',
                 price: tutor.hourly_rate * 4 * 0.9,
-                badge: 'Paling Populer • Hemat 10%',
+                badge: 'Paling Populer, Hemat 10%',
                 highlight: true,
               },
               {
@@ -167,7 +167,7 @@ function CheckoutContent() {
                 title: '8 Sesi Master Persiapan SNBT',
                 desc: 'Garansi kenaikan skor TO UTBK + bedah materi lengkap',
                 price: tutor.hourly_rate * 8 * 0.8,
-                badge: 'Garansi Skor • Hemat 20%',
+                badge: 'Garansi Skor, Hemat 20%',
               },
             ].map((pkg) => {
               const isSelected = packageType === pkg.id;
@@ -191,11 +191,11 @@ function CheckoutContent() {
                       {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-primary bg-surface-container px-2 py-0.5 rounded-md inline-block mb-1">
+                      <span className="text-[0.6875rem] font-bold text-primary bg-surface-container px-2 py-0.5 rounded-md inline-block mb-1">
                         {pkg.badge}
                       </span>
                       <p className="font-bold text-xs text-on-surface leading-tight">{pkg.title}</p>
-                      <p className="text-[11px] text-on-surface-variant mt-0.5">{pkg.desc}</p>
+                      <p className="text-[0.75rem] text-on-surface-variant mt-0.5">{pkg.desc}</p>
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
@@ -210,14 +210,14 @@ function CheckoutContent() {
         </div>
 
         {/* 2. Data Siswa & Lokasi */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface pb-2 border-b border-outline-variant/20">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
+          <h3 className="font-bold text-xs text-on-surface pb-2 border-b border-outline-variant/20">
             Data Siswa & Lokasi Belajar
           </h3>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[11px] font-semibold text-on-surface-variant block mb-1">
+              <label className="text-[0.75rem] font-semibold text-on-surface-variant block mb-1">
                 Nama Siswa
               </label>
               <input
@@ -228,7 +228,7 @@ function CheckoutContent() {
               />
             </div>
             <div>
-              <label className="text-[11px] font-semibold text-on-surface-variant block mb-1">
+              <label className="text-[0.75rem] font-semibold text-on-surface-variant block mb-1">
                 Kelas
               </label>
               <input
@@ -242,7 +242,7 @@ function CheckoutContent() {
 
           {modeParam === 'tatap_muka' && (
             <div>
-              <label className="text-[11px] font-semibold text-on-surface-variant block mb-1">
+              <label className="text-[0.75rem] font-semibold text-on-surface-variant block mb-1">
                 Alamat Rumah (Tatap Muka)
               </label>
               <textarea
@@ -254,15 +254,15 @@ function CheckoutContent() {
             </div>
           )}
 
-          <div className="p-2.5 rounded-xl bg-surface-container-low text-[11px] text-on-surface flex items-center justify-between">
+          <div className="p-2.5 rounded-xl bg-surface-container-low text-[0.75rem] text-on-surface flex items-center justify-between">
             <span className="text-on-surface-variant">Topik Bahasan:</span>
             <span className="font-bold text-primary truncate max-w-[200px]">{topicParam}</span>
           </div>
         </div>
 
         {/* 3. Metode Pembayaran */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-3">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface pb-2 border-b border-outline-variant/20">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-3">
+          <h3 className="font-bold text-xs text-on-surface pb-2 border-b border-outline-variant/20">
             Pilih Metode Pembayaran
           </h3>
 
@@ -310,7 +310,7 @@ function CheckoutContent() {
                     </div>
                     <div>
                       <p className="font-bold text-xs text-on-surface">{pm.name}</p>
-                      <p className="text-[10px] text-on-surface-variant">{pm.desc}</p>
+                      <p className="text-[0.6875rem] text-on-surface-variant">{pm.desc}</p>
                     </div>
                   </div>
                   {isSelected && (
@@ -323,14 +323,14 @@ function CheckoutContent() {
         </div>
 
         {/* 4. Voucher Promo Code */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30">
           <form onSubmit={handleApplyPromo} className="flex gap-2">
             <input
               type="text"
               placeholder="Masukkan kode promo (misal: TENTORJUARA)"
               value={promoCode}
               onChange={(e) => setPromoCode(e.target.value)}
-              className="flex-1 px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface text-xs uppercase focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="flex-1 px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface text-xs focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
             <button
               type="submit"
@@ -340,7 +340,7 @@ function CheckoutContent() {
             </button>
           </form>
           {promoApplied && (
-            <p className="text-[11px] text-emerald-600 font-bold mt-2 flex items-center gap-1">
+            <p className="text-[0.75rem] text-primary font-bold mt-2 flex items-center gap-1">
               <MaterialIcon name="check" className="text-xs" />
               Voucher TENTORJUARA berhasil dipasang (-Rp 25.000)
             </p>
@@ -348,21 +348,21 @@ function CheckoutContent() {
         </div>
 
         {/* 5. Escrow Guarantee Box */}
-        <div className="p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+        <div className="p-4 rounded-2xl bg-secondary-container border border-outline-variant flex items-start gap-3">
+          <div className="w-8 h-8 rounded-xl bg-secondary text-white flex items-center justify-center flex-shrink-0">
             <MaterialIcon name="verified_user" className="text-lg" />
           </div>
           <div>
-            <h4 className="font-bold text-xs text-emerald-950">Proteksi Rekber TentorKeun Aktif</h4>
-            <p className="text-[11px] text-emerald-800 leading-relaxed mt-0.5">
+            <h4 className="font-bold text-xs text-primary">Proteksi Rekber TentorKeun Aktif</h4>
+            <p className="text-[0.75rem] text-primary leading-relaxed mt-0.5">
               Dana Anda ditampung di rekening bersama resmi TentorKeun. Tentor baru dibayar setelah sesi belajar selesai divalidasi dengan E-Tiket Anda.
             </p>
           </div>
         </div>
 
         {/* 6. Rincian Pembayaran */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm border border-outline-variant/30 space-y-2 text-xs">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-on-surface pb-2 border-b border-outline-variant/20">
+        <div className="bg-surface rounded-2xl p-4 border border-outline-variant/30 space-y-2 text-xs">
+          <h3 className="font-bold text-xs text-on-surface pb-2 border-b border-outline-variant/20">
             Rincian Pembayaran
           </h3>
 
@@ -374,14 +374,14 @@ function CheckoutContent() {
           </div>
 
           {packageDiscount > 0 && (
-            <div className="flex justify-between text-emerald-600 font-semibold">
+            <div className="flex justify-between text-primary font-semibold">
               <span>Diskon Paket ({currentPkg.discountPercent}%)</span>
               <span>-Rp {packageDiscount.toLocaleString('id-ID')}</span>
             </div>
           )}
 
           {promoApplied && (
-            <div className="flex justify-between text-emerald-600 font-semibold">
+            <div className="flex justify-between text-primary font-semibold">
               <span>Diskon Voucher</span>
               <span>-Rp {promoDiscount.toLocaleString('id-ID')}</span>
             </div>
@@ -404,10 +404,10 @@ function CheckoutContent() {
       </main>
 
       {/* Sticky Bottom Action */}
-      <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 p-3 shadow-lg">
-        <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+      <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 bg-surface border-t border-outline-variant/30 p-3 ">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
           <div>
-            <span className="text-[10px] text-on-surface-variant block">Total Pembayaran</span>
+            <span className="text-[0.6875rem] text-on-surface-variant block">Total Pembayaran</span>
             <span className="text-base font-extrabold text-primary">
               Rp {totalAmount.toLocaleString('id-ID')}
             </span>
@@ -416,7 +416,7 @@ function CheckoutContent() {
           <button
             onClick={handleCreateOrder}
             disabled={isSubmitting}
-            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-primary/25 active:scale-95 transition-all flex items-center gap-1.5"
+            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold active:scale-95 transition-all flex items-center gap-1.5"
           >
             {isSubmitting ? (
               <span>Memproses...</span>

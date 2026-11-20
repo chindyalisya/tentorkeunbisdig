@@ -55,8 +55,8 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center transition-opacity animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border-t border-outline-variant/30 flex flex-col max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center transition-opacity animate-in fade-in duration-200">
+      <div className="w-full max-w-md bg-surface rounded-t-3xl sm:rounded-2xl p-5 shadow-2xl border-t border-outline-variant/30 flex flex-col max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
         {/* Top Header */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-outline-variant/20">
           <div className="flex flex-col min-w-0 pr-1">
@@ -64,8 +64,8 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
               Kunci Slot {tutor.name}
             </h2>
             <div className="flex items-center gap-2 mt-1">
-              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container text-xs font-semibold animate-pulse">
-                <MaterialIcon name="timer" className="text-[13px]" />
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container text-xs font-semibold ">
+                <MaterialIcon name="timer" className="text-[0.8125rem]" />
                 <span>{formatTimer(timeLeft)}</span>
               </div>
               <p className="text-xs text-on-surface-variant truncate">
@@ -92,7 +92,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
               className="w-12 h-12 rounded-xl object-cover ring-2 ring-primary/20"
             />
             <div className="flex-1 min-w-0">
-              <span className="text-[10px] font-bold text-primary uppercase tracking-wider">
+              <span className="text-[0.6875rem] font-bold text-primary ">
                 {tutor.badge}
               </span>
               <p className="font-bold text-sm text-on-surface truncate">{tutor.name}</p>
@@ -108,7 +108,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
 
           {/* Mode Belajar */}
           <div>
-            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-2">
+            <label className="text-xs font-bold text-on-surface-variant block mb-2">
               Pilih Mode Belajar
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -117,7 +117,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
                 onClick={() => setLearningMode('tatap_muka')}
                 className={`p-3 rounded-2xl border text-left flex items-start gap-2.5 transition-all ${
                   learningMode === 'tatap_muka'
-                    ? 'border-primary bg-primary/5 text-primary shadow-sm'
+                    ? 'border-primary bg-primary/5 text-primary '
                     : 'border-outline-variant/40 bg-surface text-on-surface hover:bg-surface-container-low'
                 }`}
               >
@@ -132,7 +132,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
                 </div>
                 <div>
                   <p className="text-xs font-bold leading-tight">Tatap Muka</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">Tentor ke rumah siswa</p>
+                  <p className="text-[0.6875rem] text-on-surface-variant mt-0.5">Tentor ke rumah siswa</p>
                 </div>
               </button>
 
@@ -141,7 +141,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
                 onClick={() => setLearningMode('online')}
                 className={`p-3 rounded-2xl border text-left flex items-start gap-2.5 transition-all ${
                   learningMode === 'online'
-                    ? 'border-primary bg-primary/5 text-primary shadow-sm'
+                    ? 'border-primary bg-primary/5 text-primary '
                     : 'border-outline-variant/40 bg-surface text-on-surface hover:bg-surface-container-low'
                 }`}
               >
@@ -156,7 +156,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
                 </div>
                 <div>
                   <p className="text-xs font-bold leading-tight">Online HD</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">Via Google Meet/Zoom</p>
+                  <p className="text-[0.6875rem] text-on-surface-variant mt-0.5">Via Google Meet/Zoom</p>
                 </div>
               </button>
             </div>
@@ -164,7 +164,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
 
           {/* Slot Waktu Tersedia */}
           <div>
-            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-2">
+            <label className="text-xs font-bold text-on-surface-variant block mb-2">
               Pilih Hari & Jam Sesi
             </label>
             <div className="space-y-2">
@@ -193,19 +193,19 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
                         <p className="text-xs font-bold text-on-surface">
                           {slot.day_name}, {slot.date}
                         </p>
-                        <p className="text-[11px] text-on-surface-variant">
+                        <p className="text-[0.75rem] text-on-surface-variant">
                           {slot.time_start} - {slot.time_end} WIB ({slot.mode === 'tatap_muka' ? 'Tatap Muka' : 'Online'})
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-bold text-secondary">Tersedia</span>
+                      <span className="text-[0.75rem] font-bold text-secondary">Tersedia</span>
                       <div
                         className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                           isSelected ? 'border-primary bg-primary text-white' : 'border-outline'
                         }`}
                       >
-                        {isSelected && <MaterialIcon name="check" className="text-[10px]" />}
+                        {isSelected && <MaterialIcon name="check" className="text-[0.6875rem]" />}
                       </div>
                     </div>
                   </button>
@@ -216,7 +216,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
 
           {/* Topik / Catatan Khusus */}
           <div>
-            <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1.5">
+            <label className="text-xs font-bold text-on-surface-variant block mb-1.5">
               Topik Pembahasan / Keluhan Belajar
             </label>
             <input
@@ -231,7 +231,7 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
           {/* Escrow Guarantee Callout */}
           <div className="p-3 rounded-2xl bg-secondary-container/20 border border-secondary-container/40 flex items-start gap-2.5">
             <MaterialIcon name="verified_user" className="text-secondary text-lg flex-shrink-0 mt-0.5" />
-            <p className="text-[11px] text-on-secondary-container leading-relaxed">
+            <p className="text-[0.75rem] text-on-secondary-container leading-relaxed">
               <strong>Proteksi Rekber TentorKeun:</strong> Dana Anda disimpan aman di escrow dan baru dicairkan ke tentor setelah sesi les selesai & divalidasi dengan E-Tiket.
             </p>
           </div>
@@ -240,14 +240,14 @@ export const SlotBookingSheet: React.FC<SlotBookingSheetProps> = ({
         {/* Footer Actions */}
         <div className="mt-5 pt-3 border-t border-outline-variant/20 flex items-center gap-3">
           <div className="flex-1">
-            <span className="text-[10px] text-on-surface-variant block">Total Biaya Sesi</span>
+            <span className="text-[0.6875rem] text-on-surface-variant block">Total Biaya Sesi</span>
             <span className="text-base font-extrabold text-primary">
               Rp {tutor.hourly_rate.toLocaleString('id-ID')}
             </span>
           </div>
           <button
             onClick={handleProceedToCheckout}
-            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-primary/25 active:scale-95 transition-all flex items-center gap-1.5"
+            className="px-6 py-3 rounded-2xl bg-primary hover:bg-primary-container text-white text-xs font-bold active:scale-95 transition-all flex items-center gap-1.5"
           >
             <span>Kunci & Checkout</span>
             <MaterialIcon name="arrow_forward" className="text-sm" />

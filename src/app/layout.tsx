@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Atkinson_Hyperlegible_Next } from "next/font/google";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const heading = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const body = Atkinson_Hyperlegible_Next({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-plus-jakarta",
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -20,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#000552",
+  themeColor: "#fbfbf8",
 };
 
 export default function RootLayout({
@@ -29,8 +35,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${plusJakartaSans.variable} h-full antialiased`}>
+    <html lang="id" className={`${heading.variable} ${body.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
