@@ -94,8 +94,21 @@ export interface ChatMessage {
   file_name?: string;
   file_size?: string;
   file_type?: string;
+  /** Jam tampil (HH:mm, WIB). */
   timestamp: string;
   is_read: boolean;
+  /** ISO time; dipakai untuk urutan dan pemisah tanggal. Pesan demo lokal lama bisa belum punya. */
+  created_at?: string;
+}
+
+/** Status koneksi chat: live = Realtime tersambung, local = mode demo tanpa Supabase. */
+export type ChatConnection = 'connecting' | 'live' | 'offline' | 'local';
+
+export interface ConversationSummary {
+  booking: Booking;
+  last: ChatMessage | null;
+  /** Pesan terakhir dari siswa dan belum dibalas tentor. */
+  needsReply: boolean;
 }
 
 export interface AiMatchmakingInput {

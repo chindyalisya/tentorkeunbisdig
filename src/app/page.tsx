@@ -47,16 +47,27 @@ const OTHERS = [
 const H2 = 'font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(1.9rem,4vw,3.25rem)]';
 const rupiah = (n: number) => 'Rp' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-function SubjectRow({ tone }: { tone: 'strong' | 'soft' }) {
-  const items = [...SUBJECTS, ...SUBJECTS];
+/**
+ * Satu baris pita. Isinya digandakan dua kali dan digeser tepat -50%,
+ * sehingga putarannya mulus tanpa lompatan di ujung.
+ */
+function SubjectRow({ tone, reverse = false }: { tone: 'strong' | 'soft'; reverse?: boolean }) {
+  // 4 salinan: lebar separuh jalur (2 salinan) tetap melebihi layar lebar, jadi tidak ada celah kosong.
+  const items = [...SUBJECTS, ...SUBJECTS, ...SUBJECTS, ...SUBJECTS];
   return (
-    <div className={`flex items-center whitespace-nowrap ${tone === 'strong' ? 'text-primary' : 'text-primary-fixed-dim'}`}>
-      {items.map((s, i) => (
-        <span key={i} className="flex items-center">
-          <span>{s}</span>
-          <span className="inline-block w-[0.28em] h-[0.28em] rounded-full bg-current mx-[0.45em] opacity-60" aria-hidden="true" />
-        </span>
-      ))}
+    <div className="marquee-row overflow-hidden">
+      <div
+        className={`marquee-track flex w-max items-center whitespace-nowrap ${reverse ? 'marquee-reverse' : ''} ${
+          tone === 'strong' ? 'text-primary' : 'text-primary-fixed-dim'
+        }`}
+      >
+        {items.map((s, i) => (
+          <span key={i} className="flex items-center">
+            <span>{s}</span>
+            <span className="inline-block w-[0.22em] h-[0.22em] rounded-full bg-current mx-[0.7em] opacity-50" aria-hidden="true" />
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -154,13 +165,17 @@ export default function LandingPage() {
           </Reveal>
         </section>
 
-        {/* Pita mata pelajaran: bergeser berlawanan arah mengikuti scroll */}
-        <div className="border-y border-outline-variant py-4 md:py-6 overflow-hidden" aria-hidden="true">
-          <div className="row-a font-extrabold tracking-[-0.04em] leading-none text-[clamp(2rem,5.5vw,4.5rem)]">
+        {/* Pita mata pelajaran: berjalan terus, dua baris berlawanan arah. Berhenti saat disorot. */}
+        <div
+          className="marquee border-y border-outline-variant py-3 md:py-4 space-y-1"
+          role="group"
+          aria-label={`Mata pelajaran: ${SUBJECTS.join(', ')}`}
+        >
+          <div className="font-extrabold tracking-[-0.03em] leading-[1.15] text-[clamp(1.25rem,2.8vw,2.25rem)]" aria-hidden="true">
             <SubjectRow tone="strong" />
           </div>
-          <div className="row-b mt-1.5 font-extrabold tracking-[-0.04em] leading-none text-[clamp(2rem,5.5vw,4.5rem)]">
-            <SubjectRow tone="soft" />
+          <div className="font-extrabold tracking-[-0.03em] leading-[1.15] text-[clamp(1.25rem,2.8vw,2.25rem)]" aria-hidden="true">
+            <SubjectRow tone="soft" reverse />
           </div>
         </div>
 

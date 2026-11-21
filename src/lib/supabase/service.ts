@@ -5,6 +5,8 @@ import {
   Booking,
   EvaluationReport,
   ChatMessage,
+  ChatConnection,
+  ConversationSummary,
   AiMatchmakingInput,
 } from '../types';
 import {
@@ -39,6 +41,81 @@ function setLocalData<T>(key: string, data: T): void {
   } catch (e) {
     console.error('LocalStorage write error:', e);
   }
+}
+
+// --- Chat helpers ---
+
+/** Bentuk baris tabel chat_messages. */
+interface ChatRow {
+  id: string;
+  booking_id: string;
+  sender_type: ChatMessage['sender_type'];
+  sender_name: string;
+  text: string;
+  file_name: string | null;
+  file_size: string | null;
+  file_type: string | null;
+  timestamp: string | null;
+  is_read: boolean | null;
+  created_at: string;
+}
+
+/** Jam tampil HH:mm, selalu WIB supaya siswa dan tentor melihat jam yang sama. */
+export function formatClock(iso: string): string {
+  return new Date(iso)
+    .toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' })
+    .replace('.', ':');
+}
+
+function rowToMessage(r: ChatRow): ChatMessage {
+  return {
+    id: r.id,
+    booking_id: r.booking_id,
+    sender_type: r.sender_type,
+    sender_name: r.sender_name,
+    text: r.text,
+    file_name: r.file_name ?? undefined,
+    file_size: r.file_size ?? undefined,
+    file_type: r.file_type ?? undefined,
+    timestamp: formatClock(r.created_at),
+    is_read: r.is_read ?? false,
+    created_at: r.created_at,
+  };
+}
+
+function summarize(booking: Booking, last: ChatMessage | null): ConversationSummary {
+  return { booking, last, needsReply: last?.sender_type === 'student' };
+}
+
+/** Langganan INSERT pada chat_messages. Tanpa Supabase: langsung melapor 'local'. */
+function subscribeInserts(
+  channelName: string,
+  filter: string | undefined,
+  onMessage: (m: ChatMessage) => void,
+  onStatus: (s: ChatConnection) => void
+): () => void {
+  const client = supabase;
+  if (!isSupabaseConfigured || !client) {
+    onStatus('local');
+    return () => {};
+  }
+
+  onStatus('connecting');
+  const channel = client
+    .channel(channelName)
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'chat_messages', ...(filter ? { filter } : {}) },
+      (payload) => onMessage(rowToMessage(payload.new as ChatRow))
+    )
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') onStatus('live');
+      else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') onStatus('offline');
+    });
+
+  return () => {
+    client.removeChannel(channel);
+  };
 }
 
 export const TentorService = {
@@ -175,32 +252,102 @@ export const TentorService = {
   },
 
   // --- CHAT MESSAGES ---
+  // Dengan Supabase: pesan disimpan di tabel chat_messages dan diterima lawan bicara lewat
+  // Realtime (postgres_changes). Tanpa Supabase: tersimpan di localStorage (mode demo).
+
+  /** Riwayat percakapan satu booking, urut dari yang terlama. */
   async getChatMessages(bookingId: string): Promise<ChatMessage[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('booking_id', bookingId)
+        .order('created_at', { ascending: true });
+      if (error) throw new Error(error.message);
+      return (data as ChatRow[]).map(rowToMessage);
+    }
     const allChats = getLocalData<ChatMessage[]>(STORAGE_KEYS.CHATS, MOCK_CHAT_MESSAGES);
     return allChats.filter((c) => c.booking_id === bookingId);
   },
 
-  async sendChatMessage(msg: Omit<ChatMessage, 'id' | 'timestamp' | 'is_read'>): Promise<ChatMessage> {
-    const newMsg: ChatMessage = {
-      ...msg,
-      id: `msg-${Date.now()}`,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-      is_read: true,
-    };
-
-    const allChats = getLocalData<ChatMessage[]>(STORAGE_KEYS.CHATS, MOCK_CHAT_MESSAGES);
-    const updated = [...allChats, newMsg];
-    setLocalData(STORAGE_KEYS.CHATS, updated);
-
+  /** Kirim pesan. Dengan Supabase, melempar galat bila gagal supaya UI bisa menawarkan "coba lagi". */
+  async sendChatMessage(
+    msg: Omit<ChatMessage, 'id' | 'timestamp' | 'is_read' | 'created_at'>
+  ): Promise<ChatMessage> {
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('chat_messages').insert(newMsg);
-      } catch (err) {
-        console.warn('Supabase send chat failed:', err);
-      }
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .insert({
+          booking_id: msg.booking_id,
+          sender_type: msg.sender_type,
+          sender_name: msg.sender_name,
+          text: msg.text,
+          file_name: msg.file_name ?? null,
+          file_size: msg.file_size ?? null,
+          file_type: msg.file_type ?? null,
+        })
+        .select()
+        .single();
+      if (error) throw new Error(error.message);
+      return rowToMessage(data as ChatRow);
     }
 
+    const now = new Date();
+    const newMsg: ChatMessage = {
+      ...msg,
+      id: `msg-${now.getTime()}-${Math.random().toString(36).slice(2, 6)}`,
+      timestamp: formatClock(now.toISOString()),
+      is_read: true,
+      created_at: now.toISOString(),
+    };
+    const allChats = getLocalData<ChatMessage[]>(STORAGE_KEYS.CHATS, MOCK_CHAT_MESSAGES);
+    setLocalData(STORAGE_KEYS.CHATS, [...allChats, newMsg]);
     return newMsg;
+  },
+
+  /**
+   * Dengarkan pesan baru satu booking lewat Supabase Realtime.
+   * Mengembalikan fungsi untuk berhenti mendengarkan. Tanpa Supabase: status 'local', tidak ada langganan.
+   */
+  subscribeToChat(
+    bookingId: string,
+    onMessage: (m: ChatMessage) => void,
+    onStatus: (s: ChatConnection) => void
+  ): () => void {
+    return subscribeInserts(`chat:${bookingId}`, `booking_id=eq.${bookingId}`, onMessage, onStatus);
+  },
+
+  /** Semua pesan baru yang boleh dilihat pengguna (dipakai panel tentor untuk daftar percakapan). */
+  subscribeToAllChats(onMessage: (m: ChatMessage) => void, onStatus: (s: ChatConnection) => void): () => void {
+    return subscribeInserts('chat:all', undefined, onMessage, onStatus);
+  },
+
+  /** Percakapan milik satu tentor: booking + pesan terakhir, yang menunggu balasan di atas. */
+  async getTutorConversations(tutorId: string): Promise<ConversationSummary[]> {
+    if (!isSupabaseConfigured || !supabase) return [];
+
+    const { data: bookings, error } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('tutor_id', tutorId)
+      .order('created_at', { ascending: false });
+    if (error) throw new Error(error.message);
+    if (!bookings || bookings.length === 0) return [];
+
+    const ids = (bookings as Booking[]).map((b) => b.id);
+    const { data: rows, error: msgError } = await supabase
+      .from('chat_messages')
+      .select('*')
+      .in('booking_id', ids)
+      .order('created_at', { ascending: false })
+      .limit(500);
+    if (msgError) throw new Error(msgError.message);
+
+    const lastByBooking = new Map<string, ChatMessage>();
+    for (const row of (rows ?? []) as ChatRow[]) {
+      if (!lastByBooking.has(row.booking_id)) lastByBooking.set(row.booking_id, rowToMessage(row));
+    }
+    return (bookings as Booking[]).map((booking) => summarize(booking, lastByBooking.get(booking.id) ?? null));
   },
 
   // --- AI MATCHMAKING ---
