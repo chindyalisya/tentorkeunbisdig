@@ -149,6 +149,6 @@ create policy "Allow public insert to bookings" on public.bookings for insert wi
 create policy "Allow public update to bookings" on public.bookings for update using (true);
 create policy "Allow public read access to evaluations" on public.evaluations for select using (true);
 create policy "Allow public read access to chat_messages" on public.chat_messages for select using (true);
-create policy "Allow public insert to chat_messages" on public.chat_messages for insert with check (true);
+-- Policy insert untuk chat_messages (siswa vs tentor) ada di chat-realtime.sql.
 create policy "Allow public insert to ai_matchmakings" on public.ai_matchmakings for insert with check (true);
 

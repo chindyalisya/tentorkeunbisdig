@@ -230,13 +230,30 @@
   }
 }
 
+/* ---------- Pita mata pelajaran (marquee) ----------
+   Berjalan terus tanpa bergantung pada scroll, jadi tetap bergerak di semua browser.
+   Dua baris berlawanan arah; berhenti saat disorot atau difokus. Tepi kiri-kanan memudar.
+   Jalurnya berisi 4 salinan daftar, digeser tepat -50% (2 salinan) supaya putarannya tanpa lompatan. */
+.marquee-row {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+@keyframes marquee-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track { animation: marquee-left 60s linear infinite; will-change: transform; }
+  .marquee-track.marquee-reverse { animation-name: marquee-right; animation-duration: 72s; }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track { animation-play-state: paused; }
+}
+
 /* ---------- Animasi yang digerakkan scroll ----------
    Memakai CSS scroll-driven animations: dihitung di compositor browser, jadi
    mulus dan tidak tertinggal dari scroll (tidak ada JavaScript per frame).
    Browser yang belum mendukung menampilkan keadaan akhir yang statis. */
 .scroll-progress { transform: scaleX(0); transform-origin: left; }
-.hero-l1, .hero-l2, .hero-l3, .row-a, .row-b, .coin-track { will-change: transform; }
-.row-b { transform: translateX(-30%); }
+.hero-l1, .hero-l2, .hero-l3, .coin-track { will-change: transform; }
 .coin-fill { transform-origin: left; }
 .done-in { opacity: 1; }
 .done-out { opacity: 0; }
@@ -252,11 +269,6 @@
     .hero-l1 { animation: k-hero1 linear both; animation-timeline: scroll(root); animation-range: 0px 80vh; }
     .hero-l2 { animation: k-hero2 linear both; animation-timeline: scroll(root); animation-range: 0px 80vh; }
     .hero-l3 { animation: k-hero3 linear both; animation-timeline: scroll(root); animation-range: 0px 80vh; }
-
-    @keyframes k-row-a { from { transform: translateX(0); } to { transform: translateX(-30%); } }
-    @keyframes k-row-b { from { transform: translateX(-30%); } to { transform: translateX(0); } }
-    .row-a { animation: k-row-a linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
-    .row-b { animation: k-row-b linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
 
     /* Langkah cara kerja: menyala berurutan selama panel "menempel" di layar */
     @media (min-width: 768px) {

@@ -67,10 +67,13 @@ Aplikasi ini mencakup seluruh 12 layar utama yang telah dirancang di Google Stit
    - Akses cepat ke laporan rapor evaluasi sesi terakhir.
 
 9. **Ruang Obrolan & Modul PDF** (`/chat`)
-   - Percakapan interaktif real-time antara siswa dan tentor.
-   - Pengiriman pesan instan dengan balasan otomatis interaktif.
+   - Percakapan real-time antara siswa dan tentor lewat **Supabase Realtime**: pesan tersimpan di `chat_messages` dan langsung sampai ke lawan bicara.
+   - Pengiriman optimistis (pesan muncul langsung, bisa "Coba lagi" bila gagal), pemisah tanggal, dan sinkron ulang otomatis saat koneksi pulih.
+   - Tanpa Supabase, chat berjalan dalam **mode demo**: balasan tentor disimulasikan (`src/lib/chat-reply.ts`).
    - Kartu berkas lampiran modul pelajaran: `Modul-Kalkulus-Cepat-UTBK-SarahAmanda.pdf` lengkap dengan tombol pratinjau & unduh.
    - Tombol pintas balasan cepat (*quick replies*).
+
+    - **Panel Tentor** (`/panel-tentor`): tentor masuk dengan email dan kata sandi (Supabase Auth), melihat daftar percakapan yang menunggu balasan, lalu membalas siswa secara real-time. Butuh Supabase.
 
 10. **Rapor & Evaluasi Sesi** (`/rapor/[id]`)
     - Lembar evaluasi komprehensif pasca-sesi dari tentor.
@@ -128,6 +131,7 @@ Seluruh skema database PostgreSQL dan data awal telah disiapkan di folder `supab
 1. Buat proyek baru di [Supabase Dashboard](https://supabase.com/).
 2. Buka menu **SQL Editor**, salin isi file [supabase/schema.sql](file:///c:/Users/hp/tentorkeunbisdig/supabase/schema.sql) dan jalankan (*Run*).
 3. Salin isi file [supabase/seed.sql](file:///c:/Users/hp/tentorkeunbisdig/supabase/seed.sql) dan jalankan untuk mengisi data awal.
+   Lalu jalankan `supabase/chat-realtime.sql` (aturan RLS chat, aktivasi Realtime, riwayat chat awal).
 4. Buka **Project Settings** -> **API** di Supabase, lalu salin **Project URL** dan **anon public key**.
 5. Buat atau perbarui file `.env.local` pada root proyek:
    ```env
@@ -135,6 +139,9 @@ Seluruh skema database PostgreSQL dan data awal telah disiapkan di folder `supab
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJh...
    ```
 6. Mulai ulang server Next.js. Halaman `/akun` akan menampilkan status: **🟢 Supabase Terhubung**.
+7. **Akun tentor** (agar bisa membalas dari `/panel-tentor`): buat user di *Authentication → Users*, lalu tautkan ke data tentor dengan SQL contoh di bagian bawah `supabase/chat-realtime.sql`.
+
+> Catatan keamanan: siswa belum punya login, jadi pesan chat masih bisa dibaca publik (`booking_id` berperan sebagai kunci). Siswa hanya bisa mengirim sebagai `student`; pesan `tutor` hanya bisa dikirim tentor yang login dan memiliki booking tersebut. Tambahkan login siswa sebelum dipakai untuk data sungguhan.
 
 ---
 
